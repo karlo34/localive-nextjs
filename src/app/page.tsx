@@ -18,8 +18,21 @@ export default function Home() {
       try {
         const response = await fetch('/api/test');
         const data = await response.json();
-        console.log(data);
-        setUser(data);
+        
+        // Log data and its type for debugging
+        console.log('Fetched data:', data);
+        console.log('Type of fetched data:', typeof data);
+
+        // Ensure the data is an array
+        if (Array.isArray(data)) {
+          setUser(data);
+        } else {
+          console.error('Data is not an array', data);
+          // Optionally, check if it is a nested array within an object
+          if (data.users && Array.isArray(data.users)) {
+            setUser(data.users); // If users are inside the "users" property
+          }
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -30,7 +43,7 @@ export default function Home() {
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <ul>
         {users.map((user) => (
           <li key={user.UserID}>{user.Username}</li>
