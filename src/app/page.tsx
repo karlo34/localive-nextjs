@@ -1,14 +1,17 @@
 "use client";
+import './animations.css';
+
 import { useEffect, useState } from "react";
 
-interface Beer {
-  id: number;
-  name: string;
-  // Add more fields if needed
+import Navbar from './navbar';
+
+interface User {
+  UserID: number;
+  Username: string;
 }
 
 export default function Home() {
-  const [beer, setBeer] = useState<Beer[]>([]);
+  const [users, setUser] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +19,7 @@ export default function Home() {
         const response = await fetch('/api/test');
         const data = await response.json();
         console.log(data);
-        setBeer(data);
+        setUser(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -27,9 +30,10 @@ export default function Home() {
 
   return (
     <div>
+      <Navbar/>
       <ul>
-        {beer.map((a) => (
-          <li key={a.id}>{a.name}</li>
+        {users.map((user) => (
+          <li key={user.UserID}>{user.Username}</li>
         ))}
       </ul>
     </div>
