@@ -2,6 +2,8 @@
 import './animations.css';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 
 const Navbar = () => {
   const [letters, setLetters] = useState<{ char: string; delay: number }[]>([]);
@@ -9,12 +11,15 @@ const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false); // Controls mounting
   const [animatingOut, setAnimatingOut] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  
+  const router = useRouter();
+
 
   useEffect(() => {
     const text = 'Localive';
     const spans = text.split('').map((char, i) => ({
       char,
-      delay: i * 250,
+      delay: i * 350,
     }));
     setLetters(spans);
   }, []);
@@ -47,28 +52,28 @@ const Navbar = () => {
       {menu && (
         <div
           className={`
-      fixed inset-0 bg-black bg-opacity-75 z-2 flex flex-col items-center text-white text-2xl font-bold
+      fixed inset-0 bg-black bg-opacity-75 z-2 flex flex-col items-center text-white text-2xl font-bold mt-17.5
       ${animatingOut ? 'menu-slide-fade-out' : 'menu-slide-fade-in'}`}
         >
-          <a className="mt-16">Početna</a>
+          <a onClick={()=> router.push('/')} className="mt-16">Početna</a>
           <div className="bg-white w-24 h-0.5 my-2"></div>
 
-          <a className="mt-3">Događaji</a>
+          <a onClick={()=> router.push('/events')} className="mt-3">Događaji</a>
           <div className="bg-white w-28 h-0.5 my-2"></div>
 
-          <a className="mt-3">Poslovi</a>
+          <a onClick={()=> router.push('/jobs')} className="mt-3">Poslovi</a>
           <div className="bg-white w-20 h-0.5 my-2"></div>
 
-          <a className="mt-3">Volontiranje</a>
+          <a onClick={()=> router.push('/volunteering')} className="mt-3">Volontiranje</a>
           <div className="bg-white w-36 h-0.5 my-2"></div>
 
-          <a className="mt-3">Partneri</a>
+          <a onClick={()=> router.push('/partners')} className="mt-3">Partneri</a>
           <div className="bg-white w-24 h-0.5 my-2"></div>
 
-          <a className="mt-3">Moj profil</a>
+          <a onClick={()=> router.push('/profile')} className="mt-3">Moj profil</a>
           <div className="bg-white w-30 h-0.5 my-2"></div>
 
-          <a className="mt-3">Pridruži nam se</a>
+          <a onClick={()=> router.push('/joinUs')} className="mt-3">Pridruži nam se</a>
           <div className="bg-white w-44 h-0.5 my-2"></div>
         </div>
       )}
