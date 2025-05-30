@@ -1,7 +1,7 @@
 const Events = () => {
     return(
         <div>
-            <h1>Events</h1>
+            <h1>Poslovi</h1>
         </div>
     )
 }

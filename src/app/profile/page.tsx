@@ -34,8 +34,8 @@ export default function Home() {
       <Navbar/>
       <ul>
         {users.map((user) => (
-          <div>
-            <li key={user.id}>Ime:{user.name}</li>
+          <div key={user.id}>
+            <li>Ime:{user.name}</li>
             <li>Mail:{user.email}</li>
           </div>
         ))}
