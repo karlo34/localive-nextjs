@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import Navbar from './navbar';
 
 interface User {
-  UserID: number;
-  Username: string;
+  id: number;
+  name: string;
 }
 
 export default function Home() {
@@ -46,7 +46,7 @@ export default function Home() {
       <Navbar />
       <ul>
         {users.map((user) => (
-          <li key={user.UserID}>{user.Username}</li>
+          <li key={user.id}>{user.name}</li>
         ))}
       </ul>
     </div>
