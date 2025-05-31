@@ -5,15 +5,15 @@ import bcrypt from 'bcrypt';
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { email, password } = body;
+    const { Email, Password } = body;
 
-    if (!email || !password) {
+    if (!Email || !Password) {
       return NextResponse.json({ error: 'Username and Password are required' }, { status: 400 });
     }
 
     const db = await createConnection();
     const sql = "SELECT id, name, email, password_hash FROM users WHERE email = ?";
-    const [rows] = await db.query(sql, [email]);
+    const [rows] = await db.query(sql, [Email]);
 
     if (rows.length === 0) {
       console.log("No user!");
@@ -21,7 +21,7 @@ export async function POST(request) {
     }
 
     const user = rows[0];
-    const isMatch = await bcrypt.compare(password, user.password_hash);
+    const isMatch = await bcrypt.compare(Password, user.password_hash);
 
     if (!isMatch) {
       return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
@@ -32,7 +32,8 @@ export async function POST(request) {
       message: 'Login successful',
       userId: user.id,
       username: user.name,
-      email: user.email,
+      Email: user.email,
+      Password: user.password_hash
     });
 
     // Set cookies with user data (example: userId, username, email)
@@ -60,9 +61,25 @@ export async function POST(request) {
       secure: process.env.NODE_ENV === 'production',
     });
 
+    response.cookies.set('gargamel', user.password_hash, {
+      httpOnly: false,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    response.cookies.set('logedIn', "logedIn", {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
+
     return response;
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

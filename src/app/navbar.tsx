@@ -1,5 +1,5 @@
 'use client';
-import './animations.css';
+import './css/animations.css';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
