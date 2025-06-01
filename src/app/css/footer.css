@@ -1,0 +1,10 @@
+
+.btn_organizator {
+    transition: transform 1s ease, background-color 0.3s ease, color 1s ease;
+}
+
+.btn_organizator:hover {
+    color: white;
+    background-color: rgb(30, 132, 167);
+    scale: 1.1;
+}

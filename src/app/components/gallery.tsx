@@ -103,19 +103,17 @@ export default function Home() {
         )}
       </div>
 
-      <div className="flex justify-center items-center gap-4 mt-4">
+      <div className="flex justify-center items-center gap-4">
         <button
           onClick={() => handleSlide('right')}
           className="bg-blue-500 text-white px-4 py-2 rounded"
-          disabled={animating}
-        >
+          disabled={animating}>
           Previous
         </button>
         <button
           onClick={() => handleSlide('left')}
           className="bg-blue-500 text-white px-4 py-2 rounded"
-          disabled={animating}
-        >
+          disabled={animating}>
           Next
         </button>
       </div>

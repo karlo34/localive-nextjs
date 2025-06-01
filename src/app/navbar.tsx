@@ -97,9 +97,7 @@ const Navbar = () => {
           {menu ? '✕' : '☰'}
         </button>
       </nav>
-
     </div>
-
   );
 };
 
