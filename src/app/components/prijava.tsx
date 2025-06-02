@@ -56,39 +56,38 @@ const Prijava = () => {
         }
     };
 
-    const changeForm = () => {
-        setPrijava(prev => !prev);
-        setFormPrijava({ Email: '', Password: '' });
-    };
     return (
-        <div><form onSubmit={handlePrijava}>
-            <div>
-                <label>Email:</label>
+        <div className="flex flex-col items-center text-white px-4">
+            <form
+                onSubmit={handlePrijava}
+                className="max-w-md mt-20 p-10 bg-[#2a263d] rounded-3xl flex flex-col gap-6">
+                <h1 className='text-center text-3xl font-semibold'>Prijavi se</h1>
                 <input
-                    className="bg-white text-black"
                     type="email"
                     name="Email"
                     value={formPrijava.Email}
                     onChange={handleChangePrijava}
+                    placeholder="example@gmail.com"
+                    className="w-full px-4 py-3 rounded-lg bg-[#3a3652] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     required
                 />
-            </div>
-            <div>
-                <label>Password:</label>
                 <input
-                    className="bg-white text-black"
                     type="password"
                     name="Password"
                     value={formPrijava.Password}
                     onChange={handleChangePrijava}
+                    placeholder="Enter your password"
+                    className="w-full px-4 py-3 rounded-lg bg-[#3a3652] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     required
                 />
-            </div>
-            <button type="submit" className="bg-green-600 text-white mt-3 ml-10">
-                Pošalji
-            </button>
-        </form>
-            {message && <p>{message}</p>}
+                <button
+                    type="submit"
+                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white font-semibold rounded-lg transition-all"
+                >
+                    Prijavi se
+                </button>
+            </form>
+            {message && <p className="text-white mt-4">{message}</p>}
         </div>
     )
 }

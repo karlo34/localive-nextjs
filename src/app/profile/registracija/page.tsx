@@ -32,17 +32,17 @@ const JoinUs = () => {
     <div>
       <Navbar />
       {prijava ? (
-        <div>
+        <div className='flex flex-col items-center'>
           <Prijava />
-          <button onClick={changeForm} className="mt-4 underline">
+          <button onClick={changeForm} className="-mt-8 underline">
             Nemaš profil? Registriraj se.
           </button>
         </div>
 
       ) : (
-        <div>
+        <div className='flex flex-col items-center'>
           <Registracija/>
-          <button onClick={changeForm} className="mt-4 underline">
+          <button onClick={changeForm} className="-mt-8 underline">
             Prijavi se ne postojeći profil.
           </button>
         </div>
