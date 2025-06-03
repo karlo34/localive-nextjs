@@ -16,7 +16,6 @@ export default function Home() {
   const [imagesPerPage, setImagesPerPage] = useState(3); // default for desktop
   const [loading, setLoading] = useState(true);
 
-
   // Responsive breakpoints
   const updateImagesPerPage = () => {
     const width = window.innerWidth;
