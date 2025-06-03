@@ -13,7 +13,7 @@ const Footer = () => {
             <div className="flex mx-10 flex-wrap">
                 <div className="w-1/3 min-w-50 flex flex-col items-center text-center mb-5">
                     <p className='max-w-100'>Organiziraš događaj, udruga si koja nudi tečaj, poslodavac koji traži radnike ili nešto drugo? Pritisni botun i prijavi se za oglašavanje.</p>
-                    <button className='btn_organizator mt-5 h-10 w-50 rounded-3xl bg-white text-black bold'>Prijavi se kao organizator</button>
+                    <button className='mt-5 h-10 w-50 rounded-3xl text-white bold bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'>Prijavi se kao organizator</button>
                 </div>
                 <div className="w-1/3 min-w-50 flex flex-col items-center text-center">
                     <h1>Contact us</h1>
