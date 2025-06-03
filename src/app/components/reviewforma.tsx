@@ -8,7 +8,7 @@ const reviewForma = () => {
                 <form
                     // onSubmit={handlePrijava}
                     className="max-w-200 mt-20 p-10 bg-[#2a263d] rounded-3xl flex flex-row flex-wrap justify-center items-center gap-6">
-                    <div className="max-w-80 mr-15 flex flex-col align-center">
+                    <div className="max-w-80 flex flex-col align-center">
                         <h1 className='text-center text-3xl font-semibold'>Ostavi recenziju</h1>
 
                         <textarea
@@ -24,7 +24,7 @@ const reviewForma = () => {
                         </button>
                     </div>
 
-                    <p className="w-80">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci consequatur nihil totam beatae amet doloribus assumenda neque vero aperiam necessitatibus, consectetur non, saepe dolorum aliquam provident dicta hic ullam inventore?
+                    <p className="w-80 text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci consequatur nihil totam beatae amet doloribus assumenda neque vero aperiam necessitatibus, consectetur non, saepe dolorum aliquam provident dicta hic ullam inventore?
                         Labore nihil perspiciatis illo incidunt aut nemo obcaecati cum dolores. Cum omnis repudiandae quod adipisci ratione quae eius minus neque laborum iure! Modi vero quibusdam culpa dolorem aliquam. Accusantium, facilis. At quo ipsum et temporibus eius rerum tenetur perspiciatis saepe delectus, quibusdam consequatur unde sapiente ratione ipsa aut eveniet magni, vitae, veritatis cum debitis. Cumque id consequuntur nam deleniti quam?</p>
                 </form>
             </div>

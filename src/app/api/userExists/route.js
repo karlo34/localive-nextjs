@@ -38,25 +38,25 @@ export async function POST(request) {
 
     // Set cookies with user data (example: userId, username, email)
     response.cookies.set('userId', String(user.id), {
-      httpOnly: true,
+      httpOnly: false,
       path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 1, // 1 day
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
 
     response.cookies.set('username', user.name, {
-      httpOnly: false, // visible to client-side JS
+      httpOnly: true, // visible to client-side JS
       path: '/',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 1,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
 
     response.cookies.set('email', user.email, {
-      httpOnly: false,
+      httpOnly: true,
       path: '/',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 1,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
@@ -64,14 +64,14 @@ export async function POST(request) {
     response.cookies.set('gargamel', user.password_hash, {
       httpOnly: false,
       path: '/',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 1,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
 
     response.cookies.set('logedIn', "logedIn", {
       path: '/',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 1,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
