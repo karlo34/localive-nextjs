@@ -68,7 +68,7 @@ const ReviewForm = () => {
                     </div>
 
                     <p className="w-80 text-center">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit...
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores iste, voluptatum sequi pariatur, vel laudantium laboriosam aperiam facilis numquam voluptatem at illum rerum, recusandae aut. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus repellendus vel voluptatum fugiat perspiciatis perferendis inventore aliquid, ut eius ducimus modi labore accusantium voluptate. Sequi.
                     </p>
                 </form>
             </div>

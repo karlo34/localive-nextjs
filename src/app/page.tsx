@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from './navbar';
 import Gallery from './components/gallery'
 import CounterDisplay from './components/counterDisplay';
+import Reviews from './components/reviews';
 import ReviewForma from './components/reviewforma';
 import Footer from './components/footer'
 
@@ -34,6 +35,7 @@ export default function Home() {
         </p>
       </div>
       <CounterDisplay/>
+      <Reviews/>
       {logedIn && (<ReviewForma />)}
       <Footer />
     </div>
