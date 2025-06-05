@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+// import { upperCase } from 'lodash';
+
 import '@/app/css/reviews.css';
 
 type Review = {
@@ -38,6 +40,8 @@ const Reviews = () => {
     }, [])
 
 
+
+
     return (
         <div className="mb-20">
             {loading ? (
@@ -49,8 +53,16 @@ const Reviews = () => {
                     <h1 className="text-center pb-10 text-4xl font-bold">Recenzije</h1>
                     <ul className="flex flex-row flex-wrap justify-around w-full">
                         {reviews.map((review) => (
-                            <div key={review.review_id} className="flex w-1/4 min-w-20">
-                                <p className="text-center">{review.name}: {review.content}</p>
+                            <div key={review.review_id} className="flex flex-col w-1/4 min-w-40 bg-[#3a3652] rounded-2xl px-2">
+                                <div className="flex flex-row pt-3">
+                                    <div className="w-9 h-9 rounded-full bg-[#2a263d] flex items-center justify-center text-white text-xl font-bold">
+                                        {review.name[0].toUpperCase()}
+                                    </div>
+                                    <p className="pt-1 pl-5 text-xl font-bold">{review.name}</p>
+                                </div>
+                                <div className="flex items-center justify-center align-middle">
+                                    <p className="text-center mt-2 pb-5">{review.content}</p>
+                                </div>
                             </div>
 
                         ))}

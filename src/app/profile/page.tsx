@@ -3,6 +3,9 @@
 import { useEffect } from "react";
 import { useRouter } from 'next/navigation'; // or 'next/router' for older versions
 
+import Navbar from '../navbar';
+
+
 
 const Profile = () => {
     const router = useRouter();
@@ -17,6 +20,7 @@ const Profile = () => {
     }, []);
     return (
         <div>
+            <Navbar/>
             My profile
         </div>
     )
