@@ -1,11 +1,10 @@
-import { createConnection } from '@/lib/db.js';
+import pool from '@/lib/db.js';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const db = await createConnection();
     const sql = "SELECT * FROM users";
-    const [users] = await db.query(sql);
+    const [users] = await pool.query(sql);
     return NextResponse.json(users);
   } catch (error) {
     console.error(error);

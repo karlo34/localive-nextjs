@@ -1,4 +1,4 @@
-import { createConnection } from '@/lib/db.js';
+import pool from '@/lib/db.js';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 
@@ -11,9 +11,8 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Username and Password are required' }, { status: 400 });
     }
 
-    const db = await createConnection();
     const sql = "SELECT id, name, email, password_hash FROM users WHERE email = ?";
-    const [rows] = await db.query(sql, [Email]);
+    const [rows] = await pool.query(sql, [Email]);
 
     if (rows.length === 0) {
       console.log("No user!");
@@ -33,10 +32,9 @@ export async function POST(request) {
       userId: user.id,
       username: user.name,
       Email: user.email,
-      Password: user.password_hash
     });
 
-    // Set cookies with user data (example: userId, username, email)
+    // Set cookies with user data
     response.cookies.set('userId', String(user.id), {
       httpOnly: false,
       path: '/',
@@ -46,7 +44,7 @@ export async function POST(request) {
     });
 
     response.cookies.set('username', user.name, {
-      httpOnly: true, // visible to client-side JS
+      httpOnly: true,
       path: '/',
       maxAge: 60 * 60 * 24 * 1,
       sameSite: 'lax',
@@ -68,7 +66,7 @@ export async function POST(request) {
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
-
+    
     response.cookies.set('logedIn', "logedIn", {
       path: '/',
       maxAge: 60 * 60 * 24 * 1,
@@ -82,4 +80,3 @@ export async function POST(request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-

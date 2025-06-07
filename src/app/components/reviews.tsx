@@ -39,9 +39,6 @@ const Reviews = () => {
 
     }, [])
 
-
-
-
     return (
         <div className="mb-20">
             {loading ? (
@@ -51,9 +48,9 @@ const Reviews = () => {
             ) : (
                 <div className="flex flex-col justify-center items-center align-middle">
                     <h1 className="text-center pb-10 text-4xl font-bold">Recenzije</h1>
-                    <ul className="flex flex-row flex-wrap justify-around w-full">
+                    <ul className="flex flex-row flex-wrap justify-around w-full max-w-300">
                         {reviews.map((review) => (
-                            <div key={review.review_id} className="flex flex-col w-1/4 min-w-40 bg-[#3a3652] rounded-2xl px-2">
+                            <div key={review.review_id} className="flex flex-col w-1/4 min-w-40 bg-[#3a3652] rounded-2xl mx-2 mb-10">
                                 <div className="flex flex-row pt-3">
                                     <div className="w-9 h-9 rounded-full bg-[#2a263d] flex items-center justify-center text-white text-xl font-bold">
                                         {review.name[0].toUpperCase()}

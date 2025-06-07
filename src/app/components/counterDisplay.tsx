@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-const counterDisplya = () => {
+const counterDisplay = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const count1Ref = useRef<HTMLSpanElement>(null);
     const count2Ref = useRef<HTMLSpanElement>(null);
@@ -126,4 +126,4 @@ const counterDisplya = () => {
     )
 }
 
-export default counterDisplya;
+export default counterDisplay;
