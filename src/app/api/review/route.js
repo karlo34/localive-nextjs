@@ -31,7 +31,7 @@ export async function POST(request) {
       // Update the existing review
       const reviewId = existing[0].id;
       [result] = await db.query(
-        'UPDATE reviews SET content = ? WHERE id = ?',
+        'UPDATE reviews SET content = ?, changed_at = NOW() WHERE id = ?',
         [review, reviewId]
       );
       return NextResponse.json({
@@ -41,7 +41,7 @@ export async function POST(request) {
     } else {
       // Insert new review
       [result] = await db.query(
-        'INSERT INTO reviews (user_id, content) VALUES (?, ?)',
+        'INSERT INTO reviews (user_id, content, created_at, changed_at) VALUES (?, ?,NOW(), NOW())',
         [userId, review]
       );
       return NextResponse.json({
