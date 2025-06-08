@@ -44,42 +44,10 @@ const PatientDetailsDashboard = () => {
             <button
               onClick={() => setShowSection("bedzevi")}
               className={showSection === "bedzevi" ? "active-button" : ""}
-              >
+            >
               Bedževi
             </button>
-            {
-              showSection === "podaci" && (
-                <p>{showSection}</p>
-              )
-              // Ime, prezime
-              // Email
-              // Korisničko ime
-              // Mogućnost izmjene lozinke
-              // Uredi profil (možda i profilna slika)
-            }
-            {
-              showSection === "dogadaji" && (
-                <p>{showSection}</p>
-                // Lista događaja na koje je korisnik prijavljen
-                // Status (npr. "U tijeku", "Završen")
-                // Gumbi za odjavu (ako je primjenjivo)
-              )
-            }
-            {
-              showSection === "leaderboard" && (
-                <p>{showSection}</p>
-                // broj bodova korisnika
-                // ljestvica prvih 10
-                // koji je on + 2 ispred i iza
-              )
-            }
-            {
-              showSection === "bedzevi" && (
-                <p>{showSection}</p>
-                // lista otkrivenih
-                // lista neotkrivenih (na hover ima div koji pise kako se dobije i koliko je blizu da ostvari cilj)
-              )
-            }
+
             {/* <button>All Patients</button>
             <button>Productivity</button>
             <button>Feedback Corner</button>
@@ -104,6 +72,40 @@ const PatientDetailsDashboard = () => {
               />
             </div>
           </div>
+          {
+            showSection === "podaci" && (
+              <p>{showSection}</p>
+            )
+            // Ime, prezime
+            // Email
+            // Korisničko ime
+            // Mogućnost izmjene lozinke
+            // Uredi profil (možda i profilna slika)
+          }
+          {
+            showSection === "dogadaji" && (
+              <p>{showSection}</p>
+              // Lista događaja na koje je korisnik prijavljen
+              // Status (npr. "U tijeku", "Završen")
+              // Gumbi za odjavu (ako je primjenjivo)
+            )
+          }
+          {
+            showSection === "leaderboard" && (
+              <p>{showSection}</p>
+              // broj bodova korisnika
+              // ljestvica prvih 10
+              // koji je on + 2 ispred i iza
+            )
+          }
+          {
+            showSection === "bedzevi" && (
+              <p>{showSection}</p>
+              // lista otkrivenih
+              // lista neotkrivenih (na hover ima div koji pise kako se dobije i koliko je blizu da ostvari cilj)
+            )
+          }
+
 
           <div className="grid grid-cols-3 gap-4">
             {/* Profile Card */}
