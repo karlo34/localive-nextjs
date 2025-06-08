@@ -1,94 +1,31 @@
-"use client";
-
 import React from "react";
-import { useState, useEffect } from "react"
 import { FaUser, FaEnvelope, FaPhone, FaHome, FaBuilding, FaPager, FaVenus, FaIdCard, FaHospital, FaRulerVertical, FaWeight, FaCheckCircle, FaTimesCircle, FaClock, FaBan, FaSearch, FaPlus, FaCar, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
-import "@/app/css/profile.css";
-
-import Navbar from "@/app/navbar";
-
 
 const PatientDetailsDashboard = () => {
-  const [showSection, setShowSection] = useState("podaci")
-
-  useEffect(() => {
-    console.log(showSection);
-  }, [showSection])
-
   return (
-    <div className="min-h-screen bg-[#0d0b1e] text-white pt-0">
-      <Navbar />
+    <div className="min-h-screen bg-[#0d0b1e] text-white p-4">
       <div className="max-w-[1440px] mx-auto flex rounded-2xl overflow-hidden shadow-lg">
         {/* Sidebar */}
-        <aside className="w-1/5 min-h-180 bg-white text-black p-4 space-y-4">
+        <aside className="w-1/5 bg-white text-black p-4 space-y-4">
+          <FaUser/>
           <h1 className="text-2xl font-bold mb-4">kinetik</h1>
-          {/* <button className="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white py-2 rounded flex items-center justify-center gap-2">
-            <FaPlus/> New Trip
-          </button> */}
-          <nav className="flex flex-col space-y-2 text-sm h-125 justify-center">
-            <button
-              onClick={() => setShowSection("podaci")}
-              className={showSection === "podaci" ? "active-button" : ""}>
-              Moji podaci
-            </button>
-            <button
-              onClick={() => setShowSection("dogadaji")}
-              className={showSection === "dogadaji" ? "active-button" : ""}>
-              Prijavljeni događaji
-            </button>
-            <button
-              onClick={() => setShowSection("leaderboard")}
-              className={showSection === "leaderboard" ? "active-button" : ""}>
-              Ljestvica
-            </button>
-            <button
-              onClick={() => setShowSection("bedzevi")}
-              className={showSection === "bedzevi" ? "active-button" : ""}
-              >
-              Bedževi
-            </button>
-            {
-              showSection === "podaci" && (
-                <p>{showSection}</p>
-              )
-              // Ime, prezime
-              // Email
-              // Korisničko ime
-              // Mogućnost izmjene lozinke
-              // Uredi profil (možda i profilna slika)
-            }
-            {
-              showSection === "dogadaji" && (
-                <p>{showSection}</p>
-                // Lista događaja na koje je korisnik prijavljen
-                // Status (npr. "U tijeku", "Završen")
-                // Gumbi za odjavu (ako je primjenjivo)
-              )
-            }
-            {
-              showSection === "leaderboard" && (
-                <p>{showSection}</p>
-                // broj bodova korisnika
-                // ljestvica prvih 10
-                // koji je on + 2 ispred i iza
-              )
-            }
-            {
-              showSection === "bedzevi" && (
-                <p>{showSection}</p>
-                // lista otkrivenih
-                // lista neotkrivenih (na hover ima div koji pise kako se dobije i koliko je blizu da ostvari cilj)
-              )
-            }
-            {/* <button>All Patients</button>
-            <button>Productivity</button>
-            <button>Feedback Corner</button>
-            <button>Reports</button>
-            <button>Reimbursement</button> */}
+          <button className="w-full bg-blue-600 text-white py-2 rounded flex items-center justify-center gap-2">
+            <FaPlus /> New Trip
+          </button>
+          <nav className="space-y-2 text-sm">
+            <div className="font-semibold">Trips</div>
+            <div>Transportation Providers</div>
+            <div>Patients</div>
+            <div className="pl-4 text-blue-600">All Patients</div>
+            <div>Settings</div>
+            <div>Productivity</div>
+            <div>Feedback Corner</div>
+            <div>Reports</div>
+            <div>Reimbursement</div>
           </nav>
-          {/* <div className="mt-auto text-xs text-gray-500">
+          <div className="mt-auto text-xs text-gray-500">
             Last screened on May 18, 2022 at 12:06pm
-          </div> */}
+          </div>
         </aside>
 
         {/* Main Content */}
@@ -107,16 +44,13 @@ const PatientDetailsDashboard = () => {
 
           <div className="grid grid-cols-3 gap-4">
             {/* Profile Card */}
-            <div className="col-span-1 bg-[#2a263d] text-white p-6 rounded-lg">
+            <div className="col-span-1 bg-blue-600 text-white p-6 rounded-lg">
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 rounded-full overflow-hidden">
-                  {/* <img src="/placeholder.jpg" alt="Jenny Wilson" className="w-full h-full object-cover" /> */}
+                  <img src="/placeholder.jpg" alt="Jenny Wilson" className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <div className="flex flex-row items -ml-5">
-                    <FaUser className="text-fuchsia-700 mt-2 mr-5" />
-                    <h3 className="text-lg font-bold">Mrs. Jenny Wilson</h3>
-                  </div>
+                  <h3 className="text-lg font-bold">Mrs. Jenny Wilson</h3>
                   <p className="text-sm">03.22.1990 (34)</p>
                 </div>
               </div>
@@ -155,7 +89,41 @@ const PatientDetailsDashboard = () => {
             </div>
           </div>
 
+          {/* Tabs Section */}
+          <div className="mt-6">
+            <div className="flex gap-6 border-b pb-2 mb-4">
+              <button className="text-blue-600 font-semibold">Trips</button>
+              <button className="text-gray-600">Reimbursement Drivers</button>
+              <button className="text-gray-600">Locations</button>
+              <button className="text-gray-600">Contacts</button>
+              <button className="text-gray-600">Medical Info</button>
+            </div>
 
+            <div>
+              <div className="flex justify-between items-center py-4">
+                <h4 className="text-lg font-semibold">Upcoming Trips</h4>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                  <FaPlus /> New Trip
+                </button>
+              </div>
+              <div className="space-y-3 text-sm">
+                {[
+                  { date: "25.08.2022", status: "Assigned", time: "9:32 AM", from: "4100 Hutchinson River Apt.5H", to: "52-34 Van Dam St rm603" },
+                  { date: "27.08.2022", status: "Assigned", time: "9:32 AM", from: "4100 Hutchinson River Apt.5H", to: "52-34 Van Dam St rm603" },
+                  { date: "30.08.2022", status: "Assigned", time: "9:32 AM", from: "4100 Hutchinson River Apt.5H", to: "52-34 4100 Hutchinson River Apt.5H" },
+                  { date: "15.09.2022", status: "Canceled", time: "9:32 AM", from: "4100 Hutchinson River Apt.5H", to: "52-34 Van Dam St rm603" },
+                  { date: "21.09.2022", status: "Assigned", time: "9:32 AM", from: "4100 Hutchinson River Apt.5H", to: "52-34 Van Dam St rm603" },
+                ].map((trip, i) => (
+                  <div key={i} className="flex justify-between bg-white p-3 rounded-lg shadow text-black">
+                    <span>{trip.date}</span>
+                    <span className={trip.status === "Canceled" ? "text-red-500" : "text-blue-600"}>{trip.status}</span>
+                    <span>{trip.time}</span>
+                    <span>{trip.from} → {trip.to}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </main>
       </div>
     </div>

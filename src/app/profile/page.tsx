@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'; // or 'next/router' for older versions
 
 import Navbar from '../navbar';
@@ -9,6 +9,8 @@ import Navbar from '../navbar';
 
 const Profile = () => {
     const router = useRouter();
+    const [logedIn, setLogedIn] = useState(false);
+
 
     useEffect(() => {
         const cookies = document.cookie;
@@ -16,12 +18,22 @@ const Profile = () => {
 
         if (!tokenExists) {
             router.push('/profile/registracija');
+        } else {
+            setLogedIn(true);
         }
-    }, []);
+    }, [logedIn]);
     return (
         <div>
-            <Navbar/>
-            My profile
+            {
+                logedIn && (
+                    <div>
+                        <Navbar />
+                        My profile
+
+                    </div>
+                    )
+            }
+
         </div>
     )
 }
