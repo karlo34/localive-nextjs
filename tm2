@@ -22,7 +22,7 @@ const PatientDetailsDashboard = () => {
   return (
     <div className="min-h-screen bg-[#0d0b1e] text-white pt-0">
       <Navbar />
-      <aside className="w-full lg:min-w-64 bg-white text-black p-4 space-y-4 pb-0">
+      <aside className="min-w-20 min-h-10 bg-white text-black p-4 space-y-4 pb-0">
         {/* <h1 className="text-2xl font-bold mb-4">kinetik</h1> */}
         {/* <button className="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white py-2 rounded flex items-center justify-center gap-2">
             <FaPlus/> New Trip
@@ -61,12 +61,12 @@ const PatientDetailsDashboard = () => {
             Last screened on May 18, 2022 at 12:06pm
           </div> */}
       </aside>
-      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center lg:items-start rounded-2xl overflow-hidden shadow-lg rounded-t-none px-4">
+      <div className="max-w-[1440px] mx-auto flex rounded-2xl overflow-hidden shadow-lg rounded-t-none ">
         {/* Sidebar */}
 
 
         {/* Main Content */}
-        <main className="w-full bg-gradient-to-r rounded-b-none from-purple-600 to-purple-500 text-black p-6 pt-0">
+        <main className="flex-1 bg-gradient-to-r rounded-b-none from-purple-600 to-purple-500 text-black p-6 pt-0">
           {/* <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Patient’s details</h2>
             <div className="relative">
@@ -170,7 +170,7 @@ const PatientDetailsDashboard = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-4 rounded-lg shadow w-full lg:w-1/2 overflow-auto max-h-[400px]">
+              <div className="bg-white p-4 rounded-lg shadow flex-grow w-70" style={{ height: '400px' }}>
                 <h1 className="font-semibold mb-2 text-xl">Bodovna ljestvica</h1>
                 <ol className="">
                   {[
@@ -196,7 +196,7 @@ const PatientDetailsDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="w-full bg-white rounded-lg mt-5 p-5 overflow-auto max-h-[500px]">
+          <div className="w-full bg-white rounded-lg mt-5 p-5">
             <div>
               <h1 className="mb-2 text-xl pl-3 font-semibold">Prijavljeni događaji</h1>
               <ul>
@@ -213,8 +213,8 @@ const PatientDetailsDashboard = () => {
                 ].map((data, i) => (
                   <li
                     key={i}
-                    className={`flex flex-wrap items-center gap-2 p-3 pr-5 rounded-lg shadow border-2"
-                        `}
+                    className={`flex events items-center gap-5 p-3 pr-5 rounded-lg shadow border-2"
+                        }`}
                   >
                     <span className="text-right w-5">{i + 1}.</span>
                     <span className="w-1/5">{data.organizacija}</span>
