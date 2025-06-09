@@ -36,10 +36,6 @@ const Profile = () => {
                     <div className="min-h-screen bg-[#0d0b1e] text-white pt-0">
                         <Navbar />
                         <aside className="w-full lg:min-w-64 bg-white text-black p-4 space-y-4 pb-0">
-                            {/* <h1 className="text-2xl font-bold mb-4">kinetik</h1> */}
-                            {/* <button className="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white py-2 rounded flex items-center justify-center gap-2">
-            <FaPlus/> New Trip
-          </button> */}
                             <nav className="flex flex-row justify-center align-bottom gap-3">
                                 <button
                                     onClick={() => setShowSection("podaci")}
@@ -51,81 +47,14 @@ const Profile = () => {
                                     className={`px-2 bg-gradient-to-r rounded-2xl rounded-b-none hover:from-purple-700 hover:to-purple-600 hover:text-white ${showSection === "organiziraj" ? "active-button h-10 from-purple-600 to-purple-500" : ""}`}>
                                     Prijavljeni događaji
                                 </button>
-                                {/* 
-            <button
-              onClick={() => setShowSection("leaderboard")}
-              className={showSection === "leaderboard" ? "active-button" : ""}>
-              Ljestvica
-            </button>
-            <button
-              onClick={() => setShowSection("bedzevi")}
-              className={showSection === "bedzevi" ? "active-button" : ""}
-            >
-              Bedževi
-            </button> */}
-
-                                {/* <button>All Patients</button>
-            <button>Productivity</button>
-            <button>Feedback Corner</button>
-            <button>Reports</button>
-            <button>Reimbursement</button> */}
                             </nav>
-                            {/* <div className="mt-auto text-xs text-gray-500">
-            Last screened on May 18, 2022 at 12:06pm
-          </div> */}
                         </aside>
                         <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center lg:items-start rounded-2xl overflow-hidden shadow-lg rounded-t-none px-4">
-                            {/* Sidebar */}
+                            
 
 
                             {/* Main Content */}
                             <main className="w-full bg-gradient-to-r rounded-b-none from-purple-600 to-purple-500 text-black p-6 pt-0">
-                                {/* <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Patient’s details</h2>
-            <div className="relative">
-              <FaSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-8 pr-2 py-2 border border-gray-300 rounded-md w-64"
-              />
-            </div>
-          </div> */}
-                                {
-                                    // showSection === "podaci" && (
-                                    // <p>{showSection}</p>
-                                    // )
-                                    // Ime, prezime
-                                    // Email
-                                    // Korisničko ime
-                                    // Mogućnost izmjene lozinke
-                                    // Uredi profil (možda i profilna slika)
-                                }
-                                {
-                                    // showSection === "organiziraj" && (
-                                    // <p>{showSection}</p>
-                                    // Lista događaja na koje je korisnik prijavljen
-                                    // bodovi (npr. "U tijeku", "Završen")
-                                    // Gumbi za odjavu (ako je primjenjivo)
-                                    // )
-                                }
-                                {
-                                    showSection === "leaderboard" && (
-                                        <p>{showSection}</p>
-                                        // broj bodova korisnika
-                                        // ljestvica prvih 10
-                                        // koji je on + 2 ispred i iza
-                                    )
-                                }
-                                {
-                                    showSection === "bedzevi" && (
-                                        <p>{showSection}</p>
-                                        // lista otkrivenih
-                                        // lista neotkrivenih (na hover ima div koji pise kako se dobije i koliko je blizu da ostvari cilj)
-                                    )
-                                }
-
-
                                 <div className="flex flex-wrap gap-4 mt-5 justify-center">
                                     {/* Profile Card */}
                                     <div className=" w-80 bg-[#2a263d] text-white p-6 rounded-lg">
@@ -155,7 +84,7 @@ const Profile = () => {
                                             <h4 className="text-xl font-semibold mb-2">Bedževi</h4>
                                             <div
                                                 className="overflow-y-auto"
-                                                style={{ height: 'calc(100% - 1.5rem)' }} // subtract height of h4 + margin approx
+                                                style={{ height: 'calc(100% - 1.5rem)' }}
                                             >
                                                 {/* Add enough content here to overflow */}
                                                 <ul className="mb-10 badges">
