@@ -170,7 +170,7 @@ const PatientDetailsDashboard = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-4 rounded-lg shadow w-full lg:w-1/2 overflow-auto max-h-[400px]">
+              <div className="bg-white p-4 rounded-lg shadow w-full lg:w-1/2 overflow-auto max-h-[500px]">
                 <h1 className="font-semibold mb-2 text-xl">Bodovna ljestvica</h1>
                 <ol className="">
                   {[
@@ -198,8 +198,8 @@ const PatientDetailsDashboard = () => {
           </div>
           <div className="w-full bg-white rounded-lg mt-5 p-5 overflow-auto max-h-[500px]">
             <div>
-              <h1 className="mb-2 text-xl pl-3 font-semibold">Prijavljeni događaji</h1>
-              <ul>
+              <h1 className="mb-5 text-xl font-semibold">Prijavljeni događaji</h1>
+              <ul className="space-y-4">
                 {[
                   { organizacija: "Jedna mladost", lokacija: "Velebitska 23, Split", tip: "Djeca, Edukacija", datum: "14.6.2025.", naslov: "InterSTEM" },
                   { organizacija: "Split Tech City", lokacija: "Poljička 19, Split", tip: "Druženje", datum: "03.7.2025.", naslov: "Locals & nomads" },
@@ -213,16 +213,19 @@ const PatientDetailsDashboard = () => {
                 ].map((data, i) => (
                   <li
                     key={i}
-                    className={`flex flex-wrap items-center gap-2 p-3 pr-5 rounded-lg shadow border-2"
-                        `}
+                    className="border rounded-lg shadow p-4 grid gap-y-1 gap-x-4 md:grid-cols-6 grid-cols-1 items-start"
                   >
-                    <span className="text-right w-5">{i + 1}.</span>
-                    <span className="w-1/5">{data.organizacija}</span>
-                    <span className="w-1/5">{data.naslov}</span>
-                    <span className="w-1/5">{data.lokacija}</span>
-                    <span className="w-1/5">{data.tip}</span>
-                    <span className="w-1/5">{data.datum}</span>
-                    <button className="text-red-600 font-semibold hover:text-red-600 hover:font-bold odjavi w-1/7">Odjavi se</button>
+                    <span className="font-medium text-gray-500">#{i + 1}</span>
+                    <span><strong>{data.organizacija}</strong></span>
+                    <span>{data.naslov}</span>
+                    <span>{data.lokacija}</span>
+                    <span>{data.tip}</span>
+                    <span>{data.datum}</span>
+                    <div className="md:col-span-6 flex justify-start items-center align-middle md:justify-end">
+                      <button className="text-red-600 font-semibold hover:underline">
+                        Odjavi se
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
