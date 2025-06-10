@@ -14,10 +14,10 @@ button:hover {
 
 .events:hover {
   scale: 0.99;
-  /* transform: translateY(2px); */
+  transform: translateY(2px);
 }
 
+
 .odjavi:hover{
-  scale: 1.01;
   background-color: transparent;
 }

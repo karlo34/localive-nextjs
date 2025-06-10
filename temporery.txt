@@ -1,0 +1,27 @@
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useState } from "react";
+
+export default function DateTimePicker() {
+  const [startDate, setStartDate] = useState(new Date());
+
+  return (
+    <div className="flex flex-col text-white">
+      <label className="pb-2 text-center font-medium">Odaberi datum i vrijeme</label>
+      <DatePicker
+        selected={startDate}
+        onChange={(date) => setStartDate(date!)}
+        showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={15}
+        timeCaption="Vrijeme"
+        dateFormat="dd.MM.yyyy HH:mm"
+        minDate={new Date()}
+        className="px-4 py-3 rounded-lg bg-[#3a3652] text-white focus:outline-none"
+      />
+    </div>
+  );
+}
+
+
+npm install react-datepicker

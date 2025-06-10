@@ -1,14 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Prijava = () => {
+        const router = useRouter();
+    
     const [formPrijava, setFormPrijava] = useState({
         Email: '',
         Password: ''
     })
 
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const [prijava, setPrijava] = useState(true);
     const [hasCheckedCookie, setHasCheckedCookie] = useState(false);
 
@@ -33,6 +37,7 @@ const Prijava = () => {
 
     const handlePrijava = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const response = await fetch('/api/userExists', {
                 method: 'POST',
@@ -41,18 +46,23 @@ const Prijava = () => {
                 },
                 body: JSON.stringify(formPrijava),
             });
+            
 
             const data = await response.json();
 
             if (response.ok) {
                 setMessage('Uspješno ste se prijavili!');
                 setFormPrijava({ Email: '', Password: '' });
+                router.push('/profile');
             } else {
                 setMessage(data.error || 'Greška pri prijavi.');
             }
         } catch (error) {
             console.error('Error submitting form:', error);
             setMessage('Nešto je pošlo po zlu.');
+        } finally{
+            setLoading(false);
+
         }
     };
 
@@ -84,7 +94,7 @@ const Prijava = () => {
                     type="submit"
                     className="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white font-semibold rounded-lg transition-all"
                 >
-                    Prijavi se
+                    {loading ? "Šalje se..." : "Prijavi se"}
                 </button>
             </form>
             {message && <p className="text-white mt-4">{message}</p>}

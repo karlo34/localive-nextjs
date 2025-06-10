@@ -1,12 +1,18 @@
 "use client";
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
 const Registracija = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     Username: '',
     Email: '',
     Password: '',
     checkPassword: ''
   });
+
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [hasCheckedCookie, setHasCheckedCookie] = useState(false);
 
@@ -17,8 +23,13 @@ const Registracija = () => {
   const handleRegistracija = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Start loading
+    setLoading(true);
+    setMessage('');
+
     if (formData.Password !== formData.checkPassword) {
       alert("Šifre nisu iste!");
+      setLoading(false); // Stop loading here if early return
       return;
     }
 
@@ -40,38 +51,36 @@ const Registracija = () => {
 
       setMessage('Uspješno ste se registrirali!');
 
-      // Automatically log in user after successful registration
-      try {
-        const loginResponse = await fetch('/api/userExists', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            Email: formData.Email,
-            Password: formData.Password,
-          }),
-        });
+      // Auto-login after successful registration
+      const loginResponse = await fetch('/api/userExists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Email: formData.Email,
+          Password: formData.Password,
+        }),
+      });
 
-        const loginData = await loginResponse.json();
+      const loginData = await loginResponse.json();
 
-        if (!loginResponse.ok) {
-          setMessage(loginData.error || 'Greška pri prijavi.');
-          return;
-        }
-
-        setMessage('Uspješno ste se prijavili!');
-        setFormData({ Username: '', Email: '', Password: '', checkPassword: '' });
-
-        // Optionally redirect user
-        // window.location.href = '/dashboard'; // or use router.push('/dashboard');
-      } catch (loginError) {
-        console.error('Login error:', loginError);
-        setMessage('Nešto je pošlo po zlu pri prijavi.');
+      if (!loginResponse.ok) {
+        setMessage(loginData.error || 'Greška pri prijavi.');
+        return;
       }
-    } catch (registerError) {
-      console.error('Registration error:', registerError);
-      setMessage('Nešto je pošlo po zlu pri registraciji.');
+
+      setMessage('Uspješno ste se prijavili!');
+      setFormData({ Username: '', Email: '', Password: '', checkPassword: '' });
+
+      router.push("/profile");
+
+    } catch (error) {
+      console.error('Greška:', error);
+      setMessage('Nešto je pošlo po zlu.');
+    } finally {
+      // Stop loading at the end, no matter what happened
+      setLoading(false);
     }
   };
 
@@ -125,7 +134,7 @@ const Registracija = () => {
           type="submit"
           className="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white font-semibold rounded-lg transition-all"
         >
-          Napravi profil
+          {loading ? "Šalje se..." : "Registriraj se"}
         </button>
       </form>
       {message && <p className="text-white mt-4">{message}</p>}

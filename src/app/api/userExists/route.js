@@ -11,7 +11,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Username and Password are required' }, { status: 400 });
     }
 
-    const sql = "SELECT id, name, email, password_hash FROM users WHERE email = ?";
+    const sql = "SELECT id, name, email, password_hash, role FROM users WHERE email = ?";
     const [rows] = await pool.query(sql, [Email]);
 
     if (rows.length === 0) {
@@ -32,6 +32,7 @@ export async function POST(request) {
       userId: user.id,
       username: user.name,
       Email: user.email,
+      Role: user.role
     });
 
     // Set cookies with user data
@@ -61,6 +62,13 @@ export async function POST(request) {
 
     response.cookies.set('gargamel', user.password_hash, {
       httpOnly: false,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 1,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    response.cookies.set('role', user.role, {
       path: '/',
       maxAge: 60 * 60 * 24 * 1,
       sameSite: 'lax',
