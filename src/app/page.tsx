@@ -14,7 +14,7 @@ import Footer from './components/footer'
 
 
 export default function Home() {
-  const router = useRouter();
+  // const router = useRouter();
   const [logedIn, setLogedIn] = useState(false);
 
   useEffect(() => {

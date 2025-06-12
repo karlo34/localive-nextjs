@@ -82,7 +82,7 @@ const Navbar = () => {
     const tokenExists = cookies.includes("logedIn");
 
     if (!tokenExists) {
-      router.push('/profile/registracija');
+      router.push('/');
     } else {
       setLogedIn(true);
     }
