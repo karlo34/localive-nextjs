@@ -4,15 +4,11 @@ import './css/animations.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-interface NavbarProps {
-  logedIn: boolean; // Type declaration
-}
-
 
 const Navbar = () => {
   const [letters, setLetters] = useState<{ char: string; delay: number }[]>([]);
   const [menu, setMenu] = useState(false);
-  const [showMenu, setShowMenu] = useState(false); // Controls mounting
+  const [showMenu, setShowMenu] = useState(false);
   const [animatingOut, setAnimatingOut] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [logedIn, setLogedIn] = useState(false);
@@ -33,56 +29,45 @@ const Navbar = () => {
   const menuToggle = () => {
     if (isDisabled) return;
 
-    setIsDisabled(true); // disable right away
+    setIsDisabled(true);
 
     if (menu) {
-      setAnimatingOut(true); // trigger fade-out
+      setAnimatingOut(true);
       setTimeout(() => {
-        setMenu(false);       // fully close
-        setShowMenu(false);   // unmount
+        setMenu(false);
+        setShowMenu(false);
         setAnimatingOut(false);
-      }, 800); // match fade-out animation duration
+      }, 800);
     } else {
       setMenu(true);
       setShowMenu(true);
     }
 
-    // Re-enable button after 1.5s
     setTimeout(() => {
       setIsDisabled(false);
     }, 1500);
   };
 
   const logOut = async () => {
-  try {
-    // Clear client-side cookies (these are the non-httpOnly cookies)
-    document.cookie.split(';').forEach(cookie => {
-      const [name] = cookie.trim().split('=');
-      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    });
-
-    // Call server-side logout API to clear httpOnly cookies
-    // const response = await fetch('/api/logout', {
-    //   method: 'POST',  // Ensure it's a POST request
-    //   credentials: 'same-origin',  // Ensure cookies are sent with the request
-    // });
-
-
-    
-
-    // Redirect user to home page
-    router.push("/profile/registracija");
-  } catch (error) {
-    console.error("Error logging out:", error);
-  }
-};
+    try {
+      // Clear client-side cookies (these are the non-httpOnly cookies)
+      document.cookie.split(';').forEach(cookie => {
+        const [name] = cookie.trim().split('=');
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      });
+      // Redirect user to home page
+      router.push("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   useEffect(() => {
     const cookies = document.cookie;
     const tokenExists = cookies.includes("logedIn");
 
     if (!tokenExists) {
-      router.push('/');
+      // router.push('/profile/registracija');
     } else {
       setLogedIn(true);
     }
@@ -93,8 +78,8 @@ const Navbar = () => {
       {menu && (
         <div
           className={`
-      fixed inset-0 bg-black bg-opacity-75 z-2 flex flex-col items-center text-white text-2xl font-bold mt-17.5
-      ${animatingOut ? 'menu-slide-fade-out' : 'menu-slide-fade-in'}`}
+          fixed inset-0 bg-black bg-opacity-75 z-2 flex flex-col items-center text-white text-2xl font-bold mt-17.5
+          ${animatingOut ? 'menu-slide-fade-out' : 'menu-slide-fade-in'}`}
         >
           <a onClick={() => router.push('/')} className="mt-16">Početna</a>
           <div className="bg-white w-24 h-0.5 my-2"></div>
@@ -137,9 +122,9 @@ const Navbar = () => {
           </div>
         </div>
         <button onClick={menuToggle} className={`
-    text-white text-3xl cursor-pointer translate-y-1 w-10 z-3
-    ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
-  `}>
+          text-white text-3xl cursor-pointer translate-y-1 w-10 z-3
+          ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
+        `}>
           {menu ? '✕' : '☰'}
         </button>
       </nav>

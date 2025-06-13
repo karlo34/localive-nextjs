@@ -79,7 +79,6 @@ const Registracija = () => {
       console.error('Greška:', error);
       setMessage('Nešto je pošlo po zlu.');
     } finally {
-      // Stop loading at the end, no matter what happened
       setLoading(false);
     }
   };

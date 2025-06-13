@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation'; // or 'next/router' for older versions
+import { useRouter } from 'next/navigation';
 
 
 import Navbar from '../navbar';

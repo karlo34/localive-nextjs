@@ -35,7 +35,6 @@ const JoinUs = () => {
         <div>
           <div className='flex flex-col items-center'>
             <Prijava />
-            {/* <button onClick={changeForm} className="mt-4 underline"> */}
               <button onClick={changeForm} className="-mt-8 underline">
                 Nemaš profil? Registriraj se.
               </button>

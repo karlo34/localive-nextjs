@@ -14,7 +14,6 @@ const Prijava = () => {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [prijava, setPrijava] = useState(true);
-    const [hasCheckedCookie, setHasCheckedCookie] = useState(false);
 
     useEffect(() => {
         const cookies = document.cookie;

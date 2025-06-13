@@ -1,8 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-// import { upperCase } from 'lodash';
 
-import '@/app/css/reviews.css';
+// import '@/app/css/reviews.css';
 
 type Review = {
     review_id: number;
@@ -10,7 +9,7 @@ type Review = {
     name: string;
     email: string;
     content: string;
-    created_at: string; // or Date, depending on how your backend returns it
+    created_at: string;
 };
 
 const Reviews = () => {

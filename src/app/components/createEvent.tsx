@@ -1,4 +1,4 @@
-
+"use client";
 
 const createEvent = () => {
     const handleRegistracija = (e: React.FormEvent) => {
