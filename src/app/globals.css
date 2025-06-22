@@ -28,3 +28,11 @@ a:hover{
   cursor: pointer;
   color: aqua;
 }
+
+.rbc-today{
+  background-color: green !important;
+}
+.rbc-off-range>.rbc-button-link{
+  background-color: rgb(228, 223, 223) !important;
+  color: black !important;
+}

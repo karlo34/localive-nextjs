@@ -12,3 +12,24 @@ const pool = mysql.createPool({
 });
 
 export default pool;
+
+export const mockEvents = [
+  {
+    id: 1,
+    title: 'Art Workshop',
+    datetime_start: new Date('2025-06-23T10:00:00'),
+    datetime_end: new Date('2025-06-23T12:00:00'),
+    region: 'North',
+    city: 'Zagreb',
+    type: 'Workshop',   
+  },
+  {
+    id: 2,
+    title: 'Music Festival',
+    datetime_start: new Date('2025-06-23T18:00:00'),
+    datetime_end: new Date('2025-06-23T23:00:00'),
+    region: 'South',
+    city: 'Split',
+    type: 'Concert',
+  },
+];
