@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import 'moment-timezone';
 
 export type Event = {
   id: number;
@@ -10,8 +11,10 @@ export type Event = {
   datetime_start: string;
   datetime_end: string;
 };
+moment.tz.setDefault('Europe/Zagreb');
 
 export default function EventCalendar({ events }: { events: Event[] }) {
+  console.log(events);
   const formatted = events.map(e => ({
     ...e,
     start: new Date(e.datetime_start),
@@ -34,11 +37,11 @@ export default function EventCalendar({ events }: { events: Event[] }) {
       startAccessor="start"
       endAccessor="end"
       titleAccessor="title"
-      views={["week"]}           // 👈 Only week view enabled
+      views={["week"]}
       defaultView="week"
-      date={date}                // Current focal date
+      date={date}
       onNavigate={handleNavigate} // Handles prev/next week navigation
-      style={{ height: 600 }}
+      style={{ height: 600, marginBottom: 50 }}
     />
   );
 }

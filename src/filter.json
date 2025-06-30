@@ -1,0 +1,53 @@
+{
+  "zagrebacka": [
+    "Samobor",
+    "Velika Gorica",
+    "Dugo Selo",
+    "Ivanić-Grad",
+    "Jastrebarsko",
+    "Sveti Ivan Zelina",
+    "Vrbovec",
+    "Zaprešić"
+  ],
+  "splitsko-dalmatinska": [
+    "Kaštela",
+    "Makarska",
+    "Sinj",
+    "Trogir",
+    "Imotski",
+    "Omiš",
+    "Hvar",
+    "Tučepi",
+    "Brna"
+  ],
+  "osjecko-baranjska": [
+    "Đakovo",
+    "Vinkovci",
+    "Vukovar",
+    "Beli Manastir",
+    "Našice",
+    "Antunovac",
+    "Kneževi Vinogradi",
+    "Donji Miholjac"
+  ],
+  "primorsko-goranska": [
+    "Crikvenica",
+    "Opatija",
+    "Novi Vinodolski",
+    "Matulji",
+    "Kastav",
+    "Pula",
+    "Malinska",
+    "Baška"
+  ],
+  "varazdinska": [
+    "Novi Marof",
+    "Ivanec",
+    "Ludbreg",
+    "Prelog",
+    "Bednja",
+    "Varaždinske Toplice",
+    "Donja Voća",
+    "Kneginec"
+  ]
+}

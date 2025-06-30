@@ -1,6 +1,23 @@
 import { FaUser, FaEnvelope, FaPhone, FaHome, FaPencilAlt, FaStopwatch, FaBuilding, FaPager, FaVenus, FaIdCard, FaHospital, FaRulerVertical, FaWeight, FaCheckCircle, FaClock, FaBan, FaSearch, FaPlus, FaCar, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { FaCakeCandles } from 'react-icons/fa6';
+import { useState } from "react";
 const myProfile = () => {
+    const [isAddressEditable, setAddressEditable] = useState(false);
+    const [isEmailEditable, setEmailEditable] = useState(false);
+    const [isGenderEditable, setGenderEditable] = useState(false);
+    const [isBirthdayEditable, setBirthdayEditable] = useState(false);
+    const handleDoubleClick = (e: React.MouseEvent<HTMLInputElement>, field: string) => {
+        console.log("Double-clicked on", field); // Check if it's working
+        if (field === 'address') {
+            setAddressEditable(prevState => !prevState);  // Toggle the disabled state
+        } else if (field === 'email') {
+            setEmailEditable(prevState => !prevState);  // Toggle the disabled state
+        } else if (field === 'gender') {
+            setGenderEditable(prevState => !prevState);  // Toggle the disabled state
+        } else if (field === 'birthday') {
+            setBirthdayEditable(prevState => !prevState);  // Toggle the disabled state
+        }
+    };
     return (
         <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center lg:items-start rounded-2xl overflow-hidden shadow-lg rounded-t-none px-4">
             {/* Main Content */}
@@ -20,11 +37,49 @@ const myProfile = () => {
                             </div>
                         </div>
                         <div className="flex flex-col mt-4 space-y-2 text-sm">
-                            <p><FaMapMarkerAlt className="inline mr-2" />Split, Hrvatska</p>
-                            <p><FaEnvelope className="inline mr-2" />domagoj@gmail.com</p>
-                            <p><FaVenus className="inline mr-2" />Spol: Muško</p>
-                            <p><FaCakeCandles className="inline mr-2" />Rođendan: 20.02.2006.</p>
-                            <button className="self-start pt-3">Promijeni podatke<FaPencilAlt className="inline ml-2 " /></button>
+                            <div className="flex">
+                                <FaMapMarkerAlt className="inline mr-2" />
+                                <input
+                                    type="text"
+                                    onDoubleClick={(e) => handleDoubleClick(e, 'address')}
+                                    disabled={!isAddressEditable} // Disabled state based on the state
+                                    value="Split, Hrvatska"
+                                    onFocus={(e) => e.target.select()} // Ensure that focus selects text when editable
+                                />
+                            </div>
+                            <div className="flex">
+                                <FaEnvelope className="inline mr-2" />
+                                <input
+                                    type="email"
+                                    onDoubleClick={(e) => handleDoubleClick(e, 'email')}
+                                    disabled={!isEmailEditable}
+                                    value="domagoj@gmail.com"
+                                />
+                            </div>
+                            <div className="flex">
+                                <FaVenus className="inline mr-2" />
+                                <input
+                                    type="text"
+                                    onDoubleClick={(e) => handleDoubleClick(e, 'gender')}
+                                    disabled={!isGenderEditable}
+                                    value="Muško"
+                                    className="inline"
+                                />
+                            </div>
+                            <div className="flex">
+                                <FaCakeCandles className="inline mr-2" />
+                                <input
+                                    type="text"
+                                    onDoubleClick={(e) => handleDoubleClick(e, 'birthday')}
+                                    disabled={!isBirthdayEditable}
+                                    value="20.02.2006."
+                                    className="inline"
+                                />
+                            </div>
+                            <button className="self-start pt-3">
+                                Promijeni podatke
+                                <FaPencilAlt className="inline ml-2" />
+                            </button>
                         </div>
                     </div>
 
