@@ -1,13 +1,42 @@
 import { FaUser, FaEnvelope, FaPhone, FaHome, FaPencilAlt, FaStopwatch, FaBuilding, FaPager, FaVenus, FaIdCard, FaHospital, FaRulerVertical, FaWeight, FaCheckCircle, FaClock, FaBan, FaSearch, FaPlus, FaCar, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { FaCakeCandles } from 'react-icons/fa6';
 import { useEffect, useState } from "react";
+interface Review {
+  id: number;
+  content: string;
+  created_at: string;
+}
+
+interface Stats {
+  eventViews: number;
+  jobViews: number;
+}
+
+interface UserData {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  created_at: string;
+}
+
+interface UserWrapper {
+  user: UserData;
+  attendedEvents: any[];         // You can replace 'any' with more specific types if you know them
+  jobApplications: any[];
+  volunteerApplications: any[];
+  reviews: Review[];
+  gamification: any | null;      // Replace 'any' if you know the structure
+  stats: Stats;
+}
 const myProfile = () => {
     const [isAddressEditable, setAddressEditable] = useState(false);
     const [isEmailEditable, setEmailEditable] = useState(false);
     const [isGenderEditable, setGenderEditable] = useState(false);
     const [isBirthdayEditable, setBirthdayEditable] = useState(false);
 
-    const [user, setUser] = useState<null | Record<string, unknown>>(null);
+    const [userWrapper, setUserWrapper] = useState<UserWrapper | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const handleDoubleClick = (e: React.MouseEvent<HTMLInputElement>, field: string) => {
@@ -28,7 +57,7 @@ const myProfile = () => {
                 const res = await fetch('/api/profile');
                 const data = await res.json();     // parse only after status check
                 console.log(data);
-                setUser(data);                     // put result in state
+                setUserWrapper(data);                     // put result in state
             } catch (err) {
                 console.error(err);
                 console.log('Greška pri dohvaćanju podataka');
@@ -36,11 +65,16 @@ const myProfile = () => {
         };
         fetchData();
     }, []);
-
+    useEffect(() => {
+        if (userWrapper) {
+            console.log(userWrapper.user.email);
+        }
+    }, [userWrapper]);
+    // if(!user) return null;
     return (
         <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center lg:items-start rounded-2xl overflow-hidden shadow-lg rounded-t-none px-4">
             {
-                user ? (
+                userWrapper ? (
                     <>
                         {/* Main Content */}
                         < main className="w-full bg-gradient-to-r rounded-b-none from-purple-600 to-purple-500 text-black p-6 pt-0" >
@@ -75,7 +109,7 @@ const myProfile = () => {
                                                 type="email"
                                                 onDoubleClick={(e) => handleDoubleClick(e, 'email')}
                                                 disabled={!isEmailEditable}
-                                                value="domagoj@gmail.com"
+                                                value={userWrapper?.user.email ?? 'no email'}
                                             />
                                         </div>
                                         <div className="flex">
@@ -218,31 +252,39 @@ const myProfile = () => {
                                             </ul>
                                         </div>
                                     </div>
+                                    {
+                                        userWrapper ? (
+                                            <div className="bg-white p-4 rounded-lg shadow w-full lg:w-1/2 overflow-auto max-h-[500px]">
+                                                <h1 className="font-semibold mb-2 text-xl">Bodovna ljestvica</h1>
+                                                <ol className="">
+                                                    {[
+                                                        { ime: "Domagoj", bodovi: "69 420", grad: "Novalja", datum: "18.10.2007.", email: "domagoj@gmail.com" },
+                                                        { ime: "Lana", bodovi: "42 000", grad: "Solin", datum: "03.11.2006.", email: "lana@gmail.com" },
+                                                        { ime: "Timea", bodovi: "42 000", grad: "Split", datum: "28.03.2007.", email: "timea@gmail.com" },
+                                                        { ime: "Tara", bodovi: "40 000", grad: "Dicmo", datum: "07.07.2008.", email: "tara@gmail.com" },
+                                                        { ime: "essi", bodovi: "38 600", grad: "Jyväskylä", datum: "14.09.2008.", email: "essi@gmail.com" },
+                                                        { ime: "Josip", bodovi: "40 000", grad: "Dicmo", datum: "07.07.2008.", email: "josip@gmail.com" }
+                                                    ].map((data, i) => (
+                                                        <li
+                                                            key={i}
+                                                            className={`flex items-center gap-4 p-3 rounded-lg shadow ${data.email.trim().toLowerCase() === userWrapper?.user.email?.trim().toLowerCase()
+                                                                ? "bg-blue-500 text-white"
+                                                                : "bg-white text-black"
+                                                                }`}
+                                                        >
+                                                            <span className="text-right w-6">{i + 1}.</span>
+                                                            <span className="w-1/5">{data.ime}</span>
+                                                            <span className="w-1/5">{data.bodovi}</span>
+                                                            <span className="w-1/6">{data.grad}</span>
+                                                            <span className="w-1/5">{data.datum}</span>
+                                                        </li>
 
-                                    <div className="bg-white p-4 rounded-lg shadow w-full lg:w-1/2 overflow-auto max-h-[500px]">
-                                        <h1 className="font-semibold mb-2 text-xl">Bodovna ljestvica</h1>
-                                        <ol className="">
-                                            {[
-                                                { ime: "Domagoj", bodovi: "69 420", grad: "Novalja", datum: "18.10.2007." },
-                                                { ime: "Lana", bodovi: "42 000", grad: "Solin", datum: "03.11.2006." },
-                                                { ime: "Timea", bodovi: "42 000", grad: "Split", datum: "28.03.2007." },
-                                                { ime: "Tara", bodovi: "40 000", grad: "Dicmo", datum: "07.07.2008." },
-                                                { ime: "Essi", bodovi: "38 600", grad: "Jyväskylä", datum: "14.09.2008." }
-                                            ].map((data, i) => (
-                                                <li
-                                                    key={i}
-                                                    className={`flex items-center gap-4 p-3 rounded-lg shadow ${data.ime === "Domagoj" ? "bg-blue-500 text-white" : "bg-white text-black"
-                                                        }`}
-                                                >
-                                                    <span className="text-right w-6">{i + 1}.</span>
-                                                    <span className="w-1/5">{data.ime}</span>
-                                                    <span className="w-1/5">{data.bodovi}</span>
-                                                    <span className="w-1/6">{data.grad}</span>
-                                                    <span className="w-1/5">{data.datum}</span>
-                                                </li>
-                                            ))}
-                                        </ol>
-                                    </div>
+                                                    ))}
+                                                </ol>
+                                            </div>
+                                        ) : (null)
+                                    }
+
                                 </div>
                             </div>
                             <div className="w-full bg-white rounded-lg mt-5 p-5 overflow-auto max-h-[500px]">
