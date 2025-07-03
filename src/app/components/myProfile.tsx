@@ -1,34 +1,42 @@
 import { FaUser, FaEnvelope, FaPhone, FaHome, FaPencilAlt, FaStopwatch, FaBuilding, FaPager, FaVenus, FaIdCard, FaHospital, FaRulerVertical, FaWeight, FaCheckCircle, FaClock, FaBan, FaSearch, FaPlus, FaCar, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { FaCakeCandles } from 'react-icons/fa6';
 import { useEffect, useState } from "react";
+import Leaderboard from "./leaderboard";
+
 interface Review {
-  id: number;
-  content: string;
-  created_at: string;
+    id: number;
+    content: string;
+    created_at: string;
 }
 
 interface Stats {
-  eventViews: number;
-  jobViews: number;
+    eventViews: number;
+    jobViews: number;
 }
 
 interface UserData {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  status: string;
-  created_at: string;
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+    status: string;
+    created_at: string;
+
+    city: string | null;
+    country: string | null;
+    gender: string | null;
+    birthday: string | null;  // or Date if you parse it
+    points: number | null;
 }
 
 interface UserWrapper {
-  user: UserData;
-  attendedEvents: any[];         // You can replace 'any' with more specific types if you know them
-  jobApplications: any[];
-  volunteerApplications: any[];
-  reviews: Review[];
-  gamification: any | null;      // Replace 'any' if you know the structure
-  stats: Stats;
+    user: UserData;
+    attendedEvents: any[];         // Replace with specific type if available
+    jobApplications: any[];
+    volunteerApplications: any[];
+    reviews: Review[];
+    gamification: any | null;      // Define interface if you know the structure
+    stats: Stats;
 }
 const myProfile = () => {
     const [isAddressEditable, setAddressEditable] = useState(false);
@@ -88,7 +96,7 @@ const myProfile = () => {
                                         <div>
                                             <div className="flex flex-row items min-w-50 -ml-5 items-center">
                                                 <FaUser className="text-fuchsia-700 text-3xl" />
-                                                <h3 className="font-bold pl-1 text-2xl">Domagoj</h3>
+                                                <h3 className="font-bold pl-1 text-2xl">{userWrapper.user.name.charAt(0).toUpperCase() + userWrapper.user.name.slice(1)}</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -140,15 +148,16 @@ const myProfile = () => {
                                 </div>
 
                                 {/* Stats container - take remaining space */}
-                                <div className="flex-grow flex flex-row flex-wrap gap-4 justify-center">
+                                <Leaderboard email={userWrapper.user.email} />
+                                {/* <div className="flex-grow flex flex-row flex-wrap gap-4 justify-center">
                                     <div className="bg-white p-4 rounded-lg shadow w-80" style={{ height: '400px' }}>
                                         <h4 className="text-xl font-semibold mb-2">Bedževi</h4>
                                         <div
                                             className="overflow-y-auto"
                                             style={{ height: 'calc(100% - 1.5rem)' }}
-                                        >
+                                        > */}
                                             {/* Add enough content here to overflow */}
-                                            <ul className="flex flex-wrap gap-4 mb-10">
+                                            {/* <ul className="flex flex-wrap gap-4 mb-10">
                                                 <li>1</li>
                                                 <li>2</li>
                                                 <li>3</li>
@@ -252,40 +261,36 @@ const myProfile = () => {
                                             </ul>
                                         </div>
                                     </div>
-                                    {
-                                        userWrapper ? (
-                                            <div className="bg-white p-4 rounded-lg shadow w-full lg:w-1/2 overflow-auto max-h-[500px]">
-                                                <h1 className="font-semibold mb-2 text-xl">Bodovna ljestvica</h1>
-                                                <ol className="">
-                                                    {[
-                                                        { ime: "Domagoj", bodovi: "69 420", grad: "Novalja", datum: "18.10.2007.", email: "domagoj@gmail.com" },
-                                                        { ime: "Lana", bodovi: "42 000", grad: "Solin", datum: "03.11.2006.", email: "lana@gmail.com" },
-                                                        { ime: "Timea", bodovi: "42 000", grad: "Split", datum: "28.03.2007.", email: "timea@gmail.com" },
-                                                        { ime: "Tara", bodovi: "40 000", grad: "Dicmo", datum: "07.07.2008.", email: "tara@gmail.com" },
-                                                        { ime: "essi", bodovi: "38 600", grad: "Jyväskylä", datum: "14.09.2008.", email: "essi@gmail.com" },
-                                                        { ime: "Josip", bodovi: "40 000", grad: "Dicmo", datum: "07.07.2008.", email: "josip@gmail.com" }
-                                                    ].map((data, i) => (
-                                                        <li
-                                                            key={i}
-                                                            className={`flex items-center gap-4 p-3 rounded-lg shadow ${data.email.trim().toLowerCase() === userWrapper?.user.email?.trim().toLowerCase()
-                                                                ? "bg-blue-500 text-white"
-                                                                : "bg-white text-black"
-                                                                }`}
-                                                        >
-                                                            <span className="text-right w-6">{i + 1}.</span>
-                                                            <span className="w-1/5">{data.ime}</span>
-                                                            <span className="w-1/5">{data.bodovi}</span>
-                                                            <span className="w-1/6">{data.grad}</span>
-                                                            <span className="w-1/5">{data.datum}</span>
-                                                        </li>
+                                    <div className="bg-white p-4 rounded-lg shadow w-full lg:w-1/2 overflow-auto max-h-[500px]">
+                                        <h1 className="font-semibold mb-2 text-xl">Bodovna ljestvica</h1>
+                                        <ol className="">
+                                            {[
+                                                { ime: "Domagoj", bodovi: "69 420", grad: "Novalja", datum: "18.10.2007.", email: "domagoj@gmail.com" },
+                                                { ime: "Lana", bodovi: "42 000", grad: "Solin", datum: "03.11.2006.", email: "lana@gmail.com" },
+                                                { ime: "Timea", bodovi: "42 000", grad: "Split", datum: "28.03.2007.", email: "timea@gmail.com" },
+                                                { ime: "Tara", bodovi: "40 000", grad: "Dicmo", datum: "07.07.2008.", email: "tara@gmail.com" },
+                                                { ime: "essi", bodovi: "38 600", grad: "Jyväskylä", datum: "14.09.2008.", email: "essi@gmail.com" },
+                                                { ime: "Josip", bodovi: "40 000", grad: "Dicmo", datum: "07.07.2008.", email: "josip@gmail.com" }
+                                            ].map((data, i) => (
+                                                <li
+                                                    key={i}
+                                                    className={`flex items-center gap-4 p-3 rounded-lg shadow ${data.email.trim().toLowerCase() === userWrapper?.user.email?.trim().toLowerCase()
+                                                        ? "bg-blue-500 text-white"
+                                                        : "bg-white text-black"
+                                                        }`}
+                                                >
+                                                    <span className="text-right w-6">{i + 1}.</span>
+                                                    <span className="w-1/5">{data.ime}</span>
+                                                    <span className="w-1/5">{data.bodovi}</span>
+                                                    <span className="w-1/6">{data.grad}</span>
+                                                    <span className="w-1/5">{data.datum}</span>
+                                                </li>
 
-                                                    ))}
-                                                </ol>
-                                            </div>
-                                        ) : (null)
-                                    }
-
-                                </div>
+                                            ))}
+                                        </ol>
+                                    </div>
+                                </div> */}
+                                
                             </div>
                             <div className="w-full bg-white rounded-lg mt-5 p-5 overflow-auto max-h-[500px]">
                                 <div>
@@ -323,6 +328,7 @@ const myProfile = () => {
                                 </div>
                             </div>
                         </main >
+                        
                     </>
                 ) : (
 

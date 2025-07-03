@@ -13,9 +13,11 @@ export async function GET() {
 
     const uid = Number(userId);
 
-    // Dohvaćamo korisnika
+    // Fetch user including new columns
     const [userRows] = await pool.query(
-      'SELECT id, name, email, role, status, created_at FROM users WHERE id = ?',
+      `SELECT id, name, email, role, status, created_at,
+              city, country, gender, birthday, points
+       FROM users WHERE id = ?`,
       [uid]
     );
     if (userRows.length === 0) {
@@ -23,7 +25,7 @@ export async function GET() {
     }
     const user = userRows[0];
 
-    // Događaji na koje je prijavljen
+    // Attended events
     const [attended] = await pool.query(
       `SELECT e.id, e.title, e.date, e.address, e.description
        FROM event_attendees ea
@@ -32,7 +34,7 @@ export async function GET() {
       [uid]
     );
 
-    // Oglasi i volontiranja
+    // Job applications
     const [jobApps] = await pool.query(
       `SELECT j.id, j.title, j.company_name, j.created_at
        FROM job_applications ja
@@ -40,6 +42,8 @@ export async function GET() {
        WHERE ja.user_id = ?`,
       [uid]
     );
+
+    // Volunteer applications
     const [volApps] = await pool.query(
       `SELECT v.id, v.title, v.organization_name, v.created_at
        FROM volunteer_applications va
@@ -48,15 +52,15 @@ export async function GET() {
       [uid]
     );
 
-    // Recenzije korisnika
+    // Reviews
     const [reviews] = await pool.query(
       `SELECT r.id, r.content, r.created_at
-   FROM reviews r
-   WHERE r.user_id = ?`,
+       FROM reviews r
+       WHERE r.user_id = ?`,
       [uid]
     );
 
-    // Gamifikacija i statistika gledanja
+    // Gamification
     const [gamiRows] = await pool.query(
       `SELECT points, level, badges, last_updated
        FROM gamification WHERE user_id = ? LIMIT 1`,
@@ -64,6 +68,7 @@ export async function GET() {
     );
     const gamification = gamiRows[0] || null;
 
+    // Stats for views
     const [evViews] = await pool.query(
       `SELECT COUNT(*) AS eventViews
        FROM event_views WHERE user_id = ?`,
