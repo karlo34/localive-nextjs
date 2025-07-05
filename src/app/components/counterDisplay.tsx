@@ -10,6 +10,8 @@ const counterDisplay = () => {
     // const [userNumber, setUserNumber] = useState();
 
     const [userNumber, setUserNumber] = useState<number | null>(null); // nullable to check if data is fetched
+    const [eventNumber, setEventNumber] = useState<number | null>(null); // nullable to check if data is fetched
+    const [partnerNumber, setPartnerNumber] = useState<number | null>(null); // nullable to check if data is fetched
 
     // ✅ Fetch user count once
     useEffect(() => {
@@ -18,7 +20,9 @@ const counterDisplay = () => {
                 const response = await fetch('/api/userCounter');
                 const data = await response.json();
                 console.log("Fetched data:", data); // should show { number: ... }
-                setUserNumber(data.number ?? 0);
+                setUserNumber(data.users ?? 0);
+                setEventNumber(data.events ?? 0);
+                setPartnerNumber(data.partners ?? 0);
             } catch (error) {
                 console.error("Failed to fetch user count:", error);
             }
@@ -29,7 +33,7 @@ const counterDisplay = () => {
     // ✅ Start counter when section is visible and userNumber is fetched
     useEffect(() => {
         if (userNumber === null) return; // don't observe until data is ready
-
+        if (eventNumber === null) return;
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -90,8 +94,8 @@ const counterDisplay = () => {
 
         // 👇 Use fetched userNumber for this counter
         counter(count1Ref.current, 0, userNumber || 0, 3000);
-        counter(count2Ref.current, 0, 130, 2500);
-        counter(count3Ref.current, 0, 40, 3000);
+        counter(count2Ref.current, 0, eventNumber || 0, 2500);
+        counter(count3Ref.current, 0, partnerNumber || 0, 3000);
     };
 
     return (

@@ -7,6 +7,9 @@ interface JobOfferCardsProps {
 
 const jobOfferCards = ({jobType }: JobOfferCardsProps) => {
     useEffect(()=>{
+
+        
+
         console.log(jobType);
     },[jobType])
     return (

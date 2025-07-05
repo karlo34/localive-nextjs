@@ -1,0 +1,7 @@
+1. Tracking number of clicks for each company
+
+is it possible to track number of clicks for a specific card made by user so we can track number of clicks for each company by day, week and month. I am using php, mysql and nextjs framework.
+
+2. Graph tutorial
+
+https://www.youtube.com/watch?v=15qMh8C1Wzo&ab_channel=WebDevSimplified
