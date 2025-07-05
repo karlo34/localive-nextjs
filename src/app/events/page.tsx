@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar from "../navbar";
+import Navbar from "../components/navbar";
 import dynamic from "next/dynamic";
 import EventCalendar, { Event } from "./event_calendar";
 

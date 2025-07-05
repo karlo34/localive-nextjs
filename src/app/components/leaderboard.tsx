@@ -176,50 +176,57 @@ const Leaderboard = ({ email }: LeaderboardProps) => {
                             <th className="w-1/5 px-3 py-2">Datum rođenja</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {top5Users.map((user, i) => (
-                            <tr
-                                key={user.id}
-                                className={`shadow rounded-lg ${user.email.trim().toLowerCase() === currentUserEmail
-                                    ? "bg-blue-500 text-white"
-                                    : "bg-white text-black"
-                                    }`}
-                            >
-                                <td className="text-center w-6 px-3 py-2">{i + 1}.</td>
-                                <td className="text-center w-1/5 px-3 py-2">{user.name}</td>
-                                <td className="text-center w-1/5 px-3 py-2">{user.points}</td>
-                                <td className="text-center w-1/6 px-3 py-2">{user.city}</td>
-                                <td className="text-center w-1/5 px-3 py-2">
-                                    {new Intl.DateTimeFormat("en-GB").format(new Date(user.birthday))}
-                                </td>
-                            </tr>
-                        ))}
 
-                        {currentUserNotInTop5 && currentUserIndex !== -1 && (
-                            <>
+                    <tbody>
+                        {
+                            top5Users ? (
+                                <>
+                                    {top5Users.map((user, i) => (
+                                        <tr
+                                            key={user.id}
+                                            className={`shadow rounded-lg ${user.email.trim().toLowerCase() === currentUserEmail
+                                                ? "bg-blue-500 text-white"
+                                                : "bg-white text-black"
+                                                }`}
+                                        >
+                                            <td className="text-center w-6 px-3 py-2">{i + 1}.</td>
+                                            <td className="text-center w-1/5 px-3 py-2">{user.name}</td>
+                                            <td className="text-center w-1/5 px-3 py-2">{user.points}</td>
+                                            <td className="text-center w-1/6 px-3 py-2">{user.city}</td>
+                                            <td className="text-center w-1/5 px-3 py-2">
+                                                {new Intl.DateTimeFormat("en-GB").format(new Date(user.birthday))}
+                                            </td>
+                                        </tr>
+                                    ))}
+
+                                    {currentUserNotInTop5 && currentUserIndex !== -1 && (
+                                        <>
+                                            <tr
+                                                key={users[currentUserIndex].id}
+                                                className="shadow rounded-lg bg-blue-500 text-white"
+                                            >
+                                                <td className="text-center w-6 px-3 py-2">{currentUserIndex + 1}.</td>
+                                                <td className="text-center w-1/5 px-3 py-2">{users[currentUserIndex].name}</td>
+                                                <td className="text-center w-1/5 px-3 py-2">{users[currentUserIndex].points}</td>
+                                                <td className="text-center w-1/6 px-3 py-2">{users[currentUserIndex].city}</td>
+                                                <td className="text-center w-1/5 px-3 py-2">
+                                                    {new Intl.DateTimeFormat("en-GB").format(
+                                                        new Date(users[currentUserIndex].birthday)
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        </>
+                                    )}
+                                </>
+                            ) : (
                                 <tr>
-                                    <td colSpan={5} className="py-2" />
+                                    <td colSpan={5} className="text-center py-2">Loading data ...</td>
                                 </tr>
-                                <tr
-                                    key={users[currentUserIndex].id}
-                                    className="shadow rounded-lg bg-blue-500 text-white"
-                                >
-                                    <td className="text-center w-6 px-3 py-2">{currentUserIndex + 1}.</td>
-                                    <td className="text-center w-1/5 px-3 py-2">{users[currentUserIndex].name}</td>
-                                    <td className="text-center w-1/5 px-3 py-2">{users[currentUserIndex].points}</td>
-                                    <td className="text-center w-1/6 px-3 py-2">{users[currentUserIndex].city}</td>
-                                    <td className="text-center w-1/5 px-3 py-2">
-                                        {new Intl.DateTimeFormat("en-GB").format(
-                                            new Date(users[currentUserIndex].birthday)
-                                        )}
-                                    </td>
-                                </tr>
-                            </>
-                        )}
+                            )
+                        }
                     </tbody>
                 </table>
             </div>
-
         </div>
     )
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '../navbar';
+import Navbar from '../components/navbar';
 
 const JoinUs = () => {
     const [formData, setFormData] = useState({

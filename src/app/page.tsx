@@ -4,7 +4,7 @@ import './css/animations.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import Navbar from './navbar';
+import Navbar from './components/navbar';
 import Gallery from './components/gallery'
 import CounterDisplay from './components/counterDisplay';
 import Reviews from './components/reviews';

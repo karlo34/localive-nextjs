@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import Image from "next/image";
 
-import Navbar from "../navbar";
+import Navbar from "../components/navbar";
 
 export default async function PartnersPage() {
     const dir = path.join(process.cwd(), "public", "partners");

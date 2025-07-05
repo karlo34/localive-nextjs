@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 
 
-import Navbar from '../navbar';
+import Navbar from '../components/navbar';
 import MyProfile from '@/app/components/myProfile';
 import CreateEvent from '@/app/components/createEvent';
 

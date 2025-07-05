@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Navbar from '../../navbar';
+import Navbar from '../../components/navbar';
 import Prijava from '@/app/components/prijava';
 import Registracija from '@/app/components/registracija';
 
