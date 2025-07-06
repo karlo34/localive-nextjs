@@ -1,51 +1,76 @@
+"use client";
 import { FaUser } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface JobOfferCardsProps {
-  jobType: string;
+    jobType: string;
 }
 
-const jobOfferCards = ({jobType }: JobOfferCardsProps) => {
-    useEffect(()=>{
+interface Job {
+    country: string;
+    region: string;
+    city: string;
+    company_name: string;
+    created_at: Date;
+    description: string;
+    expires_at: Date;
+    job_id: number;
+    is_active: number;
+    location_id: number;
+    posted_by: number;
+    title: string;
+}
 
-        
+const jobOfferCards = ({ jobType }: JobOfferCardsProps) => {
+    const [jobs, setJobs] = useState<Job[]>([]);
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                console.log("data");
+                const res = await fetch("api/jobs");
+                const data = await res.json();
 
-        console.log(jobType);
-    },[jobType])
+                const formattedJobs = data.map((data: any) => ({
+                    ...data,
+                    created_at: new Date(data.created_at),
+                    expires_at: new Date(data.expires_at),
+                }));
+
+                setJobs(formattedJobs);
+                console.log(formattedJobs);
+            } catch (err) {
+                console.log(err);
+            } finally {
+            }
+        };
+        fetchJobs();
+    }, []);
+
     return (
         <div className="w-full rounded-lg mt-5 p-8 overflow-auto min-h-[100vh] text-black">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {[
-                    { organizacija: "Jedna mladost", lokacija: "Velebitska 23, Split", tip: "Djeca, Edukacija", datum: "14.6.2025.", naslov: "InterSTEM" },
-                    { organizacija: "Split Tech City", lokacija: "Poljička 19, Split", tip: "Druženje", datum: "03.7.2025.", naslov: "Locals & nomads" },
-                    { organizacija: "Dump", lokacija: "Ulica kralja Zvonimira 45", tip: "Edukacija", datum: "28.03.2025.", naslov: "Php" },
-                    { organizacija: "Digitalna Dalmacija", lokacija: "Put Firula 12", tip: "Neznan više", datum: "07.08.2025.", naslov: "Razvoj umjetne inteligencije" },
-                    { organizacija: "Open Coffe", lokacija: "Velebitska ulica 88", tip: "Neznan više", datum: "14.09.2025.", naslov: "Živi lokalno radi globalno jaba diba di" },
-                    { organizacija: "Open Coffe", lokacija: "Poljička cesta 23", tip: "Neznan više", datum: "31.12.2025.", naslov: "InterSTEM" },
-                    { organizacija: "Open Coffe", lokacija: "Domovinskog rata 102", tip: "Neznan više", datum: "7.01.2026.", naslov: "InterSTEM" },
-                    { organizacija: "Open Coffe", lokacija: "Matice hrvatske 17", tip: "Neznan više", datum: "19.2.2026.", naslov: "InterSTEM" },
-                    { organizacija: "Open Coffe", lokacija: "Put Trstenika 39", tip: "Neznan više", datum: "23.12.2026.", naslov: "InterSTEM" },
-                ].map((data, i) => (
-                    <div
-                        key={i}
-                        data-type={``}
-                        className="bg-white border rounded-lg shadow p-4 gap-y-1 gap-x-4 items-start events min-h-[300px] flex flex-col transform hover:scale-105 transition duration-300"
-                    >
-                        <div className="w-full flex justify-between">
-                            <span className="font-medium text-gray-500">#{i + 1}</span>
-                            <span className="text-right">3<FaUser className="inline"/></span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {jobs === null && <p>Učitavanje poslova…</p>}
+                {jobs?.length === 0 && <p>Nema poslova za prikaz 😕</p>}
+                {jobs?.map(job => (
+                    <div key={job.job_id} data-city={job.city} data-region={job.region} data-country={job.country}
+                    className="p-4 border shadow bg-white rounded-lg gap-y-1 gap-x-4 items-start events min-h-[300px] flex flex-col transform hover:scale-102 transition duration-300">
+                        <div className="flex w-2/2 justify-between items-center">
+                            <h3 className="text-xl font-semibold">{job.title}</h3>
+                            <div className="flex items-center">
+                                <span className="text-2xl pr-2">1</span>
+                                <FaUser className="text-2xl text-blue-700" />
+
+                            </div>
                         </div>
-                        
-                        <span><strong>{data.organizacija}</strong></span>
-                        <span>{data.naslov}</span>
-                        <span>{data.lokacija}</span>
-                        <span>{data.tip}</span>
-                        <span>{data.datum}</span>
-                        <div className="md:col-span-6 flex justify-start items-center align-middle md:justify-end">
-                            <button className="text-green-600 font-semibold text-lg bg-transparent hover:bg-transparent hover:underline odjavi">
-                                Prijavi se
-                            </button>
-                        </div>
+                        <p><strong>Kompanija:</strong> {job.company_name}</p>
+                        <p><strong>Objavljeno:</strong>{new Date(job.created_at).toLocaleString()}</p>
+                        <p><strong>Istek:</strong>{new Date(job.expires_at).toLocaleString()}</p>
+                        <p className="mt-2"><strong>Lokacija:</strong>{job.country},{job.region},{job.city}</p>
+                        <p className="mt-2">{job.description}</p>
+                        {/* <p className="text-sm text-gray-500">
+                            Lokacija ID: {job.location_id} • Objavio: {job.posted_by} • Aktivno: {job.is_active === 1 ? "Da" : "Ne"}
+                        </p> */}
+                        <button className="text-white px-2 py-1 rounded-lg font-semibold font-xl border-green-700 bg-green-500 hover:cursor-pointer">Prijavi se</button>
                     </div>
                 ))}
             </div>

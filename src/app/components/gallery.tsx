@@ -1,6 +1,6 @@
 "use client";
 import '../css/animations.css';
-import '../css/gallery.css';
+// import '../css/gallery.css';
 import { useEffect, useState } from "react";
 
 interface Pictures {
@@ -23,7 +23,10 @@ export default function Home() {
       setImagesPerPage(1);
     } else if (width < 1024) {
       setImagesPerPage(2);
-    } else {
+    } else if (width < 1300){
+      setImagesPerPage(3);
+    }
+    else {
       setImagesPerPage(4);
     }
   };
@@ -99,7 +102,7 @@ export default function Home() {
               >
                 {displayedPics.map((pic, index) => (
                   <li key={index} className="flex items-center justify-center h-50">
-                    <img className="h-full object-contain" src={pic.url} alt="Slika" />
+                    <img className="h-full object-contain transform hover:scale-110 transition duration-500" src={pic.url} alt="Slika" />
                   </li>
                 ))}
               </ul>
