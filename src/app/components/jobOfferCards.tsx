@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 interface JobOfferCardsProps {
     jobType: string;
+    jobArea: string
 }
-
 interface Job {
     country: string;
     region: string;
@@ -21,8 +21,10 @@ interface Job {
     title: string;
 }
 
-const jobOfferCards = ({ jobType }: JobOfferCardsProps) => {
+const jobOfferCards = ({ jobType, jobArea }: JobOfferCardsProps) => {
     const [jobs, setJobs] = useState<Job[]>([]);
+    const [displayJobs, setDisplayJobs] = useState<Job[]>([]);
+
     useEffect(() => {
         const fetchJobs = async () => {
             try {
@@ -37,6 +39,7 @@ const jobOfferCards = ({ jobType }: JobOfferCardsProps) => {
                 }));
 
                 setJobs(formattedJobs);
+                setDisplayJobs(formattedJobs);
                 console.log(formattedJobs);
             } catch (err) {
                 console.log(err);
@@ -45,15 +48,28 @@ const jobOfferCards = ({ jobType }: JobOfferCardsProps) => {
         };
         fetchJobs();
     }, []);
+    // console.log("prominilo se");
+
+    useEffect(() => {
+        console.log("jobArea changed:", jobArea);
+
+        // Filter jobs based on jobArea (city)
+        const filteredJobs = jobs.filter((job) => job.city === jobArea);
+        // Update the displayJobs state with the filtered jobs
+        setDisplayJobs(filteredJobs);
+        if(jobArea == ""){
+            setDisplayJobs(jobs);
+        }
+    }, [jobArea, jobs]);
 
     return (
         <div className="w-full rounded-lg mt-5 p-8 overflow-auto min-h-[100vh] text-black">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {jobs === null && <p>Učitavanje poslova…</p>}
                 {jobs?.length === 0 && <p>Nema poslova za prikaz 😕</p>}
-                {jobs?.map(job => (
+                {displayJobs?.map(job => (
                     <div key={job.job_id} data-city={job.city} data-region={job.region} data-country={job.country}
-                    className="p-4 border shadow bg-white rounded-lg gap-y-1 gap-x-4 items-start events min-h-[300px] flex flex-col transform hover:scale-102 transition duration-300">
+                        className="p-4 border shadow bg-white rounded-lg gap-y-1 gap-x-4 items-start events min-h-[300px] flex flex-col transform hover:scale-102 transition duration-300">
                         <div className="flex w-2/2 justify-between items-center">
                             <h3 className="text-xl font-semibold">{job.title}</h3>
                             <div className="flex items-center">

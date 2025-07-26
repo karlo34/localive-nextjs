@@ -7,12 +7,13 @@ import { useState } from "react";
 
 const Jobs = () => {
     const [jobType, setJobType] = useState<string>("");
+    const [jobArea, setJobArea] = useState<string>("");
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedPerson = event.target.value;
         if (selectedPerson === "") {
-            setJobType(""); // Reset jobType when selection is empty
+            setJobArea(""); // Reset jobType when selection is empty
         } else {
-            setJobType(selectedPerson); // Update jobType with the selected value
+            setJobArea(selectedPerson); // Update jobType with the selected value
         }
     };
     return (
@@ -24,13 +25,13 @@ const Jobs = () => {
                 onChange={handleSelection}
                 className="w-1/4 ml-[70vw] bg-white border border-gray-300 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-                <option value="">-- Choose a person --</option>
-                <option value="John Doe">John Doe</option>
-                <option value="Jane Smith">Jane Smith</option>
-                <option value="Samuel Adams">Samuel Adams</option>
-                <option value="Emily Clark">Emily Clark</option>
+                <option value="">-- Izaberi grad --</option>
+                <option value="Split">Split</option>
+                <option value="Makarska">Makarska</option>
+                <option value="Trogir">Trogir</option>
+                <option value="Hvar">Hvar</option>
             </select>
-            <JobOfferCards jobType={jobType} />
+            <JobOfferCards jobType={jobType} jobArea={jobArea}/>
         </div>
     )
 }
