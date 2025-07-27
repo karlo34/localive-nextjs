@@ -8,7 +8,7 @@ interface Pictures {
 }
 
 export default function Home() {
-  const [pics, setPics] = useState<Pictures[]>([]);
+  const [pics, setPics] = useState<Pictures[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState<number | null>(null);
   const [animating, setAnimating] = useState(false);
@@ -23,7 +23,7 @@ export default function Home() {
       setImagesPerPage(1);
     } else if (width < 1024) {
       setImagesPerPage(2);
-    } else if (width < 1300){
+    } else if (width < 1300) {
       setImagesPerPage(3);
     }
     else {
@@ -54,6 +54,9 @@ export default function Home() {
   }, []);
 
   const getPicsSlice = (index: number) => {
+    // Ensure pics is not null and has a valid length
+    if (!pics || pics.length === 0) return [];
+
     const end = index + imagesPerPage;
     if (end <= pics.length) {
       return pics.slice(index, end);
@@ -63,12 +66,17 @@ export default function Home() {
   };
 
   const handleSlide = (dir: 'left' | 'right') => {
-    if (animating || pics.length <= imagesPerPage) return;
+    if (pics !== null) {
+      if (animating || pics.length <= imagesPerPage) return;
+    }
+    let newIndex = 0;
+    if (pics !== null) {
+      newIndex =
+        dir === 'left'
+          ? (currentIndex + imagesPerPage) % pics.length
+          : (currentIndex - imagesPerPage + pics.length) % pics.length;
 
-    const newIndex =
-      dir === 'left'
-        ? (currentIndex + imagesPerPage) % pics.length
-        : (currentIndex - imagesPerPage + pics.length) % pics.length;
+    }
 
     setAnimationDir(dir);
     setNextIndex(newIndex);
@@ -82,14 +90,14 @@ export default function Home() {
     }, 600);
   };
 
-  const displayedPics = getPicsSlice(currentIndex);
-  const upcomingPics = nextIndex !== null ? getPicsSlice(nextIndex) : null;
+  const displayedPics = getPicsSlice(currentIndex) ?? [];
+  const upcomingPics = nextIndex !== null ? getPicsSlice(nextIndex) ?? [] : null;
 
   return (
     <div>
       {loading ? (
         <p className="text-center text-gray-500 mt-10">Učitavanje slika...</p>
-      ) : pics.length <= 0 ? (
+      ) : !pics || pics.length === 0 ? (
         <p className="text-center text-gray-500 mt-10">Nema dostupnih slika.</p>
       ) : (
         <div className="flex flex-col justify-center items-center gap-4 mt-10">
@@ -97,12 +105,16 @@ export default function Home() {
             {!upcomingPics && (
               <ul
                 className={`flex gap-10 justify-center absolute inset-0 transition-all 
-                ${animationDir === 'left' ? 'slide-out-left' : ''}
-                ${animationDir === 'right' ? 'slide-out-right' : ''}`}
+          ${animationDir === 'left' ? 'slide-out-left' : ''}
+          ${animationDir === 'right' ? 'slide-out-right' : ''}`}
               >
                 {displayedPics.map((pic, index) => (
                   <li key={index} className="flex items-center justify-center h-50">
-                    <img className="h-full object-contain transform hover:scale-110 transition duration-500" src={pic.url} alt="Slika" />
+                    <img
+                      className="h-full object-contain transform hover:scale-110 transition duration-500"
+                      src={pic.url}
+                      alt="Slika"
+                    />
                   </li>
                 ))}
               </ul>
