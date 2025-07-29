@@ -11,6 +11,7 @@ import Reviews from './components/reviews';
 import ReviewForma from './components/reviewforma';
 import Footer from './components/footer'
 
+import Location from './components/location';
 
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
   return (
     <div className=''>
       <Navbar />
+      <Location />
       <h1 className='text-center text-4xl font-bold mt-15'>Slike sa događaja</h1>
       <Gallery />
       <div className='flex flex-col items-center w-full mt-15'>

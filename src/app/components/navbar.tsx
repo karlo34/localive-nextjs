@@ -14,6 +14,8 @@ const Navbar = () => {
   const [logedIn, setLogedIn] = useState(false);
 
 
+
+
   const router = useRouter();
 
 
@@ -24,6 +26,8 @@ const Navbar = () => {
       delay: i * 350,
     }));
     setLetters(spans);
+
+    
   }, []);
 
   const menuToggle = () => {
