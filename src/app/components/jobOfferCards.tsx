@@ -24,107 +24,152 @@ interface Job {
 interface JobOfferCardsProps {
     abletosignup: boolean;
 }
+const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) => {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [displayJobs, setDisplayJobs] = useState<Job[]>([]);
+  const [userApplications, setUserApplications] = useState<Set<number>>(new Set()); // Track user's applications
 
-const jobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) => {
-    const [jobs, setJobs] = useState<Job[]>([]);
-    const [displayJobs, setDisplayJobs] = useState<Job[]>([]);
+  // Fetch all jobs
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await fetch("/api/jobs");
+        const data = await res.json();
+        const formattedJobs = data.map((data: any) => ({
+          ...data,
+          created_at: new Date(data.created_at),
+          expires_at: new Date(data.expires_at),
+        }));
+        setJobs(formattedJobs);
+        setDisplayJobs(formattedJobs);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchJobs();
+  }, []);
 
-    useEffect(() => {
-        const fetchJobs = async () => {
-            try {
-                console.log("data");
-                const res = await fetch("api/jobs");
-                const data = await res.json();
-
-                const formattedJobs = data.map((data: any) => ({
-                    ...data,
-                    created_at: new Date(data.created_at),
-                    expires_at: new Date(data.expires_at),
-                }));
-
-                setJobs(formattedJobs);
-                setDisplayJobs(formattedJobs);
-                console.log(formattedJobs);
-            } catch (err) {
-                console.log(err);
-            } finally {
-            }
-        };
-        fetchJobs();
-    }, []);
-    // console.log("prominilo se");
-
-    useEffect(() => {
-        console.log("jobArea changed:", jobArea);
-
-        // Filter jobs based on jobArea (city)
-        const filteredJobs = jobs.filter((job) => job.city === jobArea);
-        // Update the displayJobs state with the filtered jobs
-        setDisplayJobs(filteredJobs);
-        if (jobArea == "") {
-            setDisplayJobs(jobs);
+  // Fetch user's job applications
+  useEffect(() => {
+    const fetchUserApplications = async () => {
+      try {
+        const res = await fetch("/api/userApplications");
+        const data = await res.json();
+        if (data?.applications) {
+          setUserApplications(new Set(data.applications)); // Store applied job IDs in a Set
         }
-    }, [jobArea, jobs]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUserApplications();
+  }, []);
 
-    async function handleButtonClick(job: Job): Promise<void> {
-        console.log("You clicked on the job:", job);
-        // You can also display more specific information like:
-        console.log(`Job Title: ${job.job_id}, Company: ${job.company_name}`);
+  // Handle job application
+  async function handleButtonClick(job: Job): Promise<void> {
+    console.log("You clicked on the job:", job);
 
-        try {
-            const response = await fetch('/api/jobApplication', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ jobId: job.job_id }), // Send jobId to the backend
-            });
+    try {
+      const response = await fetch("/api/jobApplication", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ jobId: job.job_id }),
+      });
 
-            const data = await response.json();
+      const data = await response.json();
 
-            if (response.ok) {
-                alert('Job application submitted successfully!');
-            } else {
-                console.log(data.error || 'An error occurred');
-            }
-        } catch (error) {
-            console.error('Error applying for job:', error);
-            console.log('An error occurred while applying for the job.');
-        } finally {
-            console.log("Job application process completed.");
-        }
+      if (response.ok) {
+        alert("Job application submitted successfully!");
+        setUserApplications((prev) => new Set(prev).add(job.job_id)); // Add job to the applied set
+      } else {
+        console.log(data.error || "An error occurred");
+      }
+    } catch (error) {
+      console.error("Error applying for job:", error);
     }
+  }
 
+  // Handle job unapplication (sign out)
+  async function handleSignOut(job: Job): Promise<void> {
+    console.log("You clicked on Sign Out:", job);
 
-return (
+    try {
+      const response = await fetch("/api/jobApplication", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ jobId: job.job_id }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Job application removed successfully!");
+        setUserApplications((prev) => {
+          const newApplications = new Set(prev);
+          newApplications.delete(job.job_id); // Remove the job from the applied set
+          return newApplications;
+        });
+      } else {
+        console.log(data.error || "An error occurred");
+      }
+    } catch (error) {
+      console.error("Error removing application:", error);
+    }
+  }
+
+  return (
     <div className="w-full rounded-lg mt-5 p-8 overflow-auto min-h-[100vh] text-black">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {jobs === null && <p>Učitavanje poslova…</p>}
-            {jobs?.length === 0 && <p>Nema poslova za prikaz 😕</p>}
-            {displayJobs?.map(job => (
-                <div key={job.job_id} data-city={job.city} data-region={job.region} data-country={job.country}
-                    className="p-4 border shadow bg-white rounded-lg gap-y-1 gap-x-4 items-start events min-h-[300px] flex flex-col transform hover:scale-102 transition duration-300">
-                    <div className="flex w-2/2 justify-between items-center">
-                        <h3 className="text-xl font-semibold">{job.title}</h3>
-                        <div className="flex items-center">
-                            <span className="text-2xl pr-2">1</span>
-                            <FaUser className="text-2xl text-blue-700" />
-                        </div>
-                    </div>
-                    <p><strong>Kompanija:</strong> {job.company_name}</p>
-                    <p><strong>Objavljeno:</strong>{new Date(job.created_at).toLocaleString()}</p>
-                    <p><strong>Istek:</strong>{new Date(job.expires_at).toLocaleString()}</p>
-                    <p className="mt-2"><strong>Lokacija:</strong>{job.country},{job.region},{job.city}</p>
-                    <p className="mt-2">{job.description}</p>
-                    <button className={`text-white px-2 py-1 mt-2 rounded-lg font-semibold text-base border-green-700 bg-green-500 hover:cursor-pointer ${abletosignup ? "active" : "disabled opacity-50 cursor-not-allowed"}`} onClick={() => handleButtonClick(job)}>Prijavi se</button>
-                    {!abletosignup && <p className="text-red-500">Ulogiraj se za prijavu za posao</p>}
-                </div>
-            ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {jobs?.length === 0 && <p>No jobs available 😕</p>}
+        {displayJobs?.map((job) => (
+          <div
+            key={job.job_id}
+            className="p-4 border shadow bg-white rounded-lg gap-y-1 gap-x-4 items-start events min-h-[300px] flex flex-col transform hover:scale-102 transition duration-300"
+          >
+            <div className="flex w-2/2 justify-between items-center">
+              <h3 className="text-xl font-semibold">{job.title}</h3>
+            </div>
+            <p>
+              <strong>Company:</strong> {job.company_name}
+            </p>
+            <p>
+              <strong>Posted:</strong> {new Date(job.created_at).toLocaleString()}
+            </p>
+            <p>
+              <strong>Expires:</strong> {new Date(job.expires_at).toLocaleString()}
+            </p>
+            <p className="mt-2">
+              <strong>Location:</strong> {job.country}, {job.region}, {job.city}
+            </p>
+            <p className="mt-2">{job.description}</p>
+
+            {userApplications.has(job.job_id) ? (
+              <button
+                className="text-white px-2 py-1 mt-2 rounded-lg font-semibold text-base border-red-700 bg-red-500 hover:cursor-pointer"
+                onClick={() => handleSignOut(job)}
+              >
+                Odjavi se
+              </button>
+            ) : (
+              <button
+                className={`text-white px-2 py-1 mt-2 rounded-lg font-semibold text-base border-green-700 bg-green-500 hover:cursor-pointer ${
+                  abletosignup ? "active" : "disabled opacity-50 cursor-not-allowed"
+                }`}
+                onClick={() => handleButtonClick(job)}
+              >
+                Prijavi se
+              </button>
+            )}
+            {!abletosignup && <p className="text-red-500">Ulogiraj se za prijavu</p>}
+          </div>
+        ))}
+      </div>
     </div>
-)
-}
+  );
+};
 
-export default jobOfferCards;
-
-//gap-8
+export default JobOfferCards;

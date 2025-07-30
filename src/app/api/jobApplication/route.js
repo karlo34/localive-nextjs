@@ -47,3 +47,41 @@ export async function POST(request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(request) {
+  try {
+    const body = await request.json();
+    const { jobId } = body; // Get jobId from the request body
+
+    const cookieStore = cookies();
+    const userId = cookieStore.get('userId')?.value;
+
+    if (!userId || !jobId) {
+      return NextResponse.json(
+        { error: 'Missing userId or jobId' },
+        { status: 400 }
+      );
+    }
+
+    // Remove the job application from the job_applications table
+    const [result] = await pool.query(
+      'DELETE FROM job_applications WHERE job_id = ? AND user_id = ?',
+      [jobId, userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return NextResponse.json(
+        { error: 'You have not applied for this job or application does not exist' },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json({
+      message: 'Job application removed successfully',
+    });
+
+  } catch (error) {
+    console.error('API error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
