@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <div className=''>
       <Navbar />
-      <Location />
+      {/* <Location />  doesnt work */}
       <h1 className='text-center text-4xl font-bold mt-15'>Slike sa događaja</h1>
       <Gallery />
       <div className='flex flex-col items-center w-full mt-15'>
