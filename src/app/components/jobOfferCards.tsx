@@ -21,7 +21,11 @@ interface Job {
     title: string;
 }
 
-const jobOfferCards = ({ jobType, jobArea }: JobOfferCardsProps) => {
+interface JobOfferCardsProps {
+    abletosignup: boolean;
+}
+
+const jobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) => {
     const [jobs, setJobs] = useState<Job[]>([]);
     const [displayJobs, setDisplayJobs] = useState<Job[]>([]);
 
@@ -57,41 +61,68 @@ const jobOfferCards = ({ jobType, jobArea }: JobOfferCardsProps) => {
         const filteredJobs = jobs.filter((job) => job.city === jobArea);
         // Update the displayJobs state with the filtered jobs
         setDisplayJobs(filteredJobs);
-        if(jobArea == ""){
+        if (jobArea == "") {
             setDisplayJobs(jobs);
         }
     }, [jobArea, jobs]);
 
-    return (
-        <div className="w-full rounded-lg mt-5 p-8 overflow-auto min-h-[100vh] text-black">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {jobs === null && <p>Učitavanje poslova…</p>}
-                {jobs?.length === 0 && <p>Nema poslova za prikaz 😕</p>}
-                {displayJobs?.map(job => (
-                    <div key={job.job_id} data-city={job.city} data-region={job.region} data-country={job.country}
-                        className="p-4 border shadow bg-white rounded-lg gap-y-1 gap-x-4 items-start events min-h-[300px] flex flex-col transform hover:scale-102 transition duration-300">
-                        <div className="flex w-2/2 justify-between items-center">
-                            <h3 className="text-xl font-semibold">{job.title}</h3>
-                            <div className="flex items-center">
-                                <span className="text-2xl pr-2">1</span>
-                                <FaUser className="text-2xl text-blue-700" />
+    async function handleButtonClick(job: Job): Promise<void> {
+        console.log("You clicked on the job:", job);
+        // You can also display more specific information like:
+        console.log(`Job Title: ${job.job_id}, Company: ${job.company_name}`);
 
-                            </div>
+        try {
+            const response = await fetch('/api/jobApplication', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ jobId: job.job_id }), // Send jobId to the backend
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Job application submitted successfully!');
+            } else {
+                console.log(data.error || 'An error occurred');
+            }
+        } catch (error) {
+            console.error('Error applying for job:', error);
+            console.log('An error occurred while applying for the job.');
+        } finally {
+            console.log("Job application process completed.");
+        }
+    }
+
+
+return (
+    <div className="w-full rounded-lg mt-5 p-8 overflow-auto min-h-[100vh] text-black">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {jobs === null && <p>Učitavanje poslova…</p>}
+            {jobs?.length === 0 && <p>Nema poslova za prikaz 😕</p>}
+            {displayJobs?.map(job => (
+                <div key={job.job_id} data-city={job.city} data-region={job.region} data-country={job.country}
+                    className="p-4 border shadow bg-white rounded-lg gap-y-1 gap-x-4 items-start events min-h-[300px] flex flex-col transform hover:scale-102 transition duration-300">
+                    <div className="flex w-2/2 justify-between items-center">
+                        <h3 className="text-xl font-semibold">{job.title}</h3>
+                        <div className="flex items-center">
+                            <span className="text-2xl pr-2">1</span>
+                            <FaUser className="text-2xl text-blue-700" />
                         </div>
-                        <p><strong>Kompanija:</strong> {job.company_name}</p>
-                        <p><strong>Objavljeno:</strong>{new Date(job.created_at).toLocaleString()}</p>
-                        <p><strong>Istek:</strong>{new Date(job.expires_at).toLocaleString()}</p>
-                        <p className="mt-2"><strong>Lokacija:</strong>{job.country},{job.region},{job.city}</p>
-                        <p className="mt-2">{job.description}</p>
-                        {/* <p className="text-sm text-gray-500">
-                            Lokacija ID: {job.location_id} • Objavio: {job.posted_by} • Aktivno: {job.is_active === 1 ? "Da" : "Ne"}
-                        </p> */}
-                        <button className="text-white px-2 py-1 rounded-lg font-semibold font-xl border-green-700 bg-green-500 hover:cursor-pointer">Prijavi se</button>
                     </div>
-                ))}
-            </div>
+                    <p><strong>Kompanija:</strong> {job.company_name}</p>
+                    <p><strong>Objavljeno:</strong>{new Date(job.created_at).toLocaleString()}</p>
+                    <p><strong>Istek:</strong>{new Date(job.expires_at).toLocaleString()}</p>
+                    <p className="mt-2"><strong>Lokacija:</strong>{job.country},{job.region},{job.city}</p>
+                    <p className="mt-2">{job.description}</p>
+                    <button className={`text-white px-2 py-1 mt-2 rounded-lg font-semibold text-base border-green-700 bg-green-500 hover:cursor-pointer ${abletosignup ? "active" : "disabled opacity-50 cursor-not-allowed"}`} onClick={() => handleButtonClick(job)}>Prijavi se</button>
+                    {!abletosignup && <p className="text-red-500">Ulogiraj se za prijavu za posao</p>}
+                </div>
+            ))}
         </div>
-    )
+    </div>
+)
 }
 
 export default jobOfferCards;

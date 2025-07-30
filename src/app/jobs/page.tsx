@@ -2,12 +2,14 @@
 import JobOfferCards from "../components/jobOfferCards";
 import Navbar from "../components/navbar";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import "../css/profile.css";
 
 const Jobs = () => {
     const [jobType, setJobType] = useState<string>("");
     const [jobArea, setJobArea] = useState<string>("");
+    const [logedIn, setLogedIn] = useState(false);
+
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedPerson = event.target.value;
         if (selectedPerson === "") {
@@ -16,6 +18,15 @@ const Jobs = () => {
             setJobArea(selectedPerson); // Update jobType with the selected value
         }
     };
+
+
+    useEffect(() => {
+        const cookies = document.cookie;
+        const tokenExists = cookies.includes("logedIn");
+        if (tokenExists) {
+            setLogedIn(true);
+        }
+    }, [logedIn]);
     return (
         <div>
             <Navbar />
@@ -31,7 +42,7 @@ const Jobs = () => {
                 <option value="Trogir">Trogir</option>
                 <option value="Hvar">Hvar</option>
             </select>
-            <JobOfferCards jobType={jobType} jobArea={jobArea}/>
+            <JobOfferCards jobType={jobType} jobArea={jobArea} abletosignup={logedIn}/>
         </div>
     )
 }
