@@ -151,6 +151,11 @@ const myProfile = () => {
                                 <Leaderboard email={userWrapper.user.email} />
                                 
                             </div>
+                            <div className="w-full bg-white rounded-lg mt-5 p-5 overflow-auto max-h-[250px]">
+                                <h1>Upiši kod događaja:</h1>
+                                <input className="border-black border rounded-md mt-4 h-10 w-[75vw] sm:w-[80vw] pl-3" type="text" name="" id="" />
+                                <button className="mt-3 xl:mt-0 ml-0 xl:ml-3 py-2 px-5 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white font-semibold rounded-lg transition-all">Unesi</button>
+                            </div>
                             <div className="w-full bg-white rounded-lg mt-5 p-5 overflow-auto max-h-[500px]">
                                 <div>
                                     <h1 className="mb-5 text-xl font-semibold">Prijavljeni događaji</h1>
