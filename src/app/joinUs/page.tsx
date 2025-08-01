@@ -1,188 +1,98 @@
-'use client';
-
+"use client";
 import { useState } from 'react';
-import Navbar from '../components/navbar';
+import { FaEnvelope } from 'react-icons/fa';
 
-const JoinUs = () => {
-    const [formData, setFormData] = useState({
-        Username: '',
-        Email: '',
-        Password: '',
-        checkPassword: ''
-    });
+export default function JoinMailForm() {
+  const [form, setForm] = useState({
+    name: '', email: '', company: '', message: ''
+  });
 
-    const [formPrijava, setFormPrijava] = useState({
-        email: '',
-        password: ''
-    })
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+  };
 
-    const [message, setMessage] = useState('');
-    const [prijava, setPrijava] = useState(true);
+  const autoGrowTextArea = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const ta = e.currentTarget;
+    ta.style.height = 'auto';
+    ta.style.height = `${ta.scrollHeight}px`;
+  };
 
-    const handleChangeRegistracija = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+  const mailtoHref = () => {
+    const subject = encodeURIComponent(`Join request: ${form.company} — ${form.name}`);
+    const body = encodeURIComponent(`
+Name: ${form.name}
+Email: ${form.email}
+Company: ${form.company}
 
-    const handleChangePrijava = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormPrijava({ ...formPrijava, [e.target.name]: e.target.value });
-    };
+Message:
+${form.message}
+`);
+    return `mailto:you@yourdomain.com?subject=${subject}&body=${body}`;
+  };
 
-    const handleRegistracija = async (e: React.FormEvent) => {
-        e.preventDefault();
+  return (
+    <div className="min-h-screen flex items-start justify-center bg-gradient-to-r from-purple-600 to-purple-500 py-20">
+      <form
+        className="
+        flex flex-col
+          w-full max-w-md
+          space-y-4
+          pt-5
+          px-4 pb-10 rounded-2xl
+          bg-white shadow-lg text-black
+          h-fit
+        "
+      >
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Your name"
+          className="pl-2 mt-2 border rounded-2xl h-10"
+          required
+        />
 
-        if (formData.Password !== formData.checkPassword) {
-            alert("Šifre nisu iste!");
-            return;
-        }
+        <input
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Your email"
+          type="email"
+          className="pl-2 border rounded-2xl h-10"
+          required
+        />
 
-        try {
-            const response = await fetch('/api/userExport', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+        <input
+          name="company"
+          value={form.company}
+          onChange={handleChange}
+          placeholder="Company"
+          className="pl-2 border rounded-2xl h-10"
+          required
+        />
 
-            const data = await response.json();
+        <textarea
+          name="message"
+          value={form.message}
+          onChange={handleChange}
+          placeholder="Your message"
+          rows={1}
+          onInput={autoGrowTextArea}
+          className="pl-2 p-2 min-h-20 border rounded-2xl w-full resize-none h-auto overflow-hidden"
+          required
+        />
 
-            if (response.ok) {
-                setMessage('Uspješno ste se prijavili!');
-                setFormData({ Username: '', Email: '', Password: '', checkPassword: '' });
-            } else {
-                setMessage(data.error || 'Greška pri prijavi.');
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            setMessage('Nešto je pošlo po zlu.');
-        }
-    };
-    const handlePrijava = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/api/userExists', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formPrijava),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setMessage('Uspješno ste se prijavili!');
-                setFormPrijava({ email: '', password: ''});
-            } else {
-                setMessage(data.error || 'Greška pri prijavi.');
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            setMessage('Nešto je pošlo po zlu.');
-        }
-    };
-
-    const changeForm = () => {
-        setPrijava(prev => !prev);
-    };
-
-    return (
-        <div>
-            <Navbar />
-
-            {prijava ? (
-                <div>
-                    <h1>Pridruži nam se</h1>
-                    <form onSubmit={handleRegistracija}>
-                        <div>
-                            <label>Ime:</label>
-                            <input
-                                className="bg-white text-black"
-                                type="text"
-                                name="Username"
-                                value={formData.Username}
-                                onChange={handleChangeRegistracija}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label>Email:</label>
-                            <input
-                                className="bg-white text-black"
-                                type="email"
-                                name="Email"
-                                value={formData.Email}
-                                onChange={handleChangeRegistracija}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label>Password:</label>
-                            <input
-                                className="bg-white text-black"
-                                type="password"
-                                name="Password"
-                                value={formData.Password}
-                                onChange={handleChangeRegistracija}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label>Potvrdi šifru:</label>
-                            <input
-                                className="bg-white text-black"
-                                type="password"
-                                name="checkPassword"
-                                value={formData.checkPassword}
-                                onChange={handleChangeRegistracija}
-                                required
-                            />
-                        </div>
-                        <button type="submit" className="bg-green-600 text-white mt-3 ml-10">
-                            Pošalji
-                        </button>
-                    </form>
-                    {message && <p>{message}</p>}
-                    <button onClick={changeForm} className="mt-4 underline">
-                        Promijeni formu
-                    </button>
-                </div>
-            ) : (
-                <div><form onSubmit={handlePrijava}>
-                    <div>
-                        <label>Email:</label>
-                        <input
-                            className="bg-white text-black"
-                            type="email"
-                            name="email"
-                            value={formPrijava.email}
-                            onChange={handleChangePrijava}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label>Password:</label>
-                        <input
-                            className="bg-white text-black"
-                            type="password"
-                            name="password"
-                            value={formPrijava.password}
-                            onChange={handleChangePrijava}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="bg-green-600 text-white mt-3 ml-10">
-                        Pošalji
-                    </button>
-                </form>
-                    {message && <p>{message}</p>}
-                    <button onClick={changeForm} className="mt-4 underline">
-                        Promijeni formu
-                    </button>
-                </div>
-            )}
-        </div>
-    );
-};
-
-export default JoinUs;
+        <a
+          href={mailtoHref()}
+          className="py-2 px-4 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white font-semibold rounded-lg transition-all inline-flex items-center justify-center"
+        >
+          <FaEnvelope className="h-5 w-5 mr-2" aria-hidden="true" />
+          Send via Email
+        </a>
+      </form>
+    </div>
+  );
+}
