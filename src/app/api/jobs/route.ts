@@ -1,6 +1,7 @@
 import pool from '@/lib/db.js';
 import { NextResponse } from 'next/server';
 
+// /api/jobs
 export async function GET() {
   try {
     const sql = `
@@ -16,15 +17,16 @@ export async function GET() {
         jobs.title, 
         locations.city, 
         locations.country, 
-        locations.region
+        locations.region,
+        COUNT(job_applications.id) AS application_count
       FROM jobs
-      JOIN locations ON jobs.location_id = locations.id;
+      JOIN locations ON jobs.location_id = locations.id
+      LEFT JOIN job_applications ON jobs.id = job_applications.job_id
+      GROUP BY jobs.id;
     `;
 
-    // Execute the query
     const [jobs] = await pool.query(sql);
 
-    // Return the result as JSON
     return NextResponse.json(jobs);
   } catch (error: any) {
     console.error(error);

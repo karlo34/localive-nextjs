@@ -3,51 +3,54 @@ import { FaUser } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
 interface JobOfferCardsProps {
-    jobType: string;
-    jobArea: string
+  jobType: string;
+  jobArea: string
 }
 interface Job {
-    country: string;
-    region: string;
-    city: string;
-    company_name: string;
-    created_at: Date;
-    description: string;
-    expires_at: Date;
-    job_id: number;
-    is_active: number;
-    location_id: number;
-    posted_by: number;
-    title: string;
+  country: string;
+  region: string;
+  city: string;
+  company_name: string;
+  created_at: Date;
+  description: string;
+  expires_at: Date;
+  job_id: number;
+  is_active: number;
+  location_id: number;
+  posted_by: number;
+  title: string;
+  application_count: number;
 }
 
 interface JobOfferCardsProps {
-    abletosignup: boolean;
+  abletosignup: boolean;
 }
 const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [displayJobs, setDisplayJobs] = useState<Job[]>([]);
   const [userApplications, setUserApplications] = useState<Set<number>>(new Set()); // Track user's applications
-
+  
+  const fetchJobs = async () => {
+    try {
+      const res = await fetch("/api/jobs");
+      const data = await res.json();
+      const formattedJobs = data.map((data: any) => ({
+        ...data,
+        created_at: new Date(data.created_at),
+        expires_at: new Date(data.expires_at),
+      }));
+      setJobs(formattedJobs);
+      setDisplayJobs(formattedJobs);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   // Fetch all jobs
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const res = await fetch("/api/jobs");
-        const data = await res.json();
-        const formattedJobs = data.map((data: any) => ({
-          ...data,
-          created_at: new Date(data.created_at),
-          expires_at: new Date(data.expires_at),
-        }));
-        setJobs(formattedJobs);
-        setDisplayJobs(formattedJobs);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchJobs();
   }, []);
+
+  
 
   // Fetch user's job applications
   useEffect(() => {
@@ -83,6 +86,7 @@ const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) =
       if (response.ok) {
         alert("Job application submitted successfully!");
         setUserApplications((prev) => new Set(prev).add(job.job_id)); // Add job to the applied set
+        fetchJobs();
       } else {
         console.log(data.error || "An error occurred");
       }
@@ -111,6 +115,7 @@ const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) =
         setUserApplications((prev) => {
           const newApplications = new Set(prev);
           newApplications.delete(job.job_id); // Remove the job from the applied set
+          fetchJobs();
           return newApplications;
         });
       } else {
@@ -132,6 +137,10 @@ const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) =
           >
             <div className="flex w-2/2 justify-between items-center">
               <h3 className="text-xl font-semibold">{job.title}</h3>
+              <div className="flex items-center gap-x-2 text-lg">
+                <p>{job.application_count}</p>
+                <FaUser />
+              </div>
             </div>
             <p>
               <strong>Company:</strong> {job.company_name}
@@ -156,9 +165,8 @@ const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) =
               </button>
             ) : (
               <button
-                className={`text-white px-2 py-1 mt-2 rounded-lg font-semibold text-base border-green-700 bg-green-500 hover:cursor-pointer ${
-                  abletosignup ? "active" : "disabled opacity-50 cursor-not-allowed"
-                }`}
+                className={`text-white px-2 py-1 mt-2 rounded-lg font-semibold text-base border-green-700 bg-green-500 hover:cursor-pointer ${abletosignup ? "active" : "disabled opacity-50 cursor-not-allowed"
+                  }`}
                 onClick={() => handleButtonClick(job)}
               >
                 Prijavi se
