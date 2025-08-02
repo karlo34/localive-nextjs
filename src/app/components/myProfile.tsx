@@ -85,7 +85,7 @@ const myProfile = () => {
                 userWrapper ? (
                     <>
                         {/* Main Content */}
-                        < main className="w-full bg-gradient-to-r rounded-b-none from-purple-600 to-purple-500 text-black p-6 pt-0" >
+                        <main className="w-full bg-gradient-to-r rounded-b-none from-purple-600 to-purple-500 text-black p-6 pt-0" >
                             <div className="flex flex-wrap gap-4 mt-5 justify-center">
                                 {/* Profile Card */}
                                 <div className=" w-80 bg-[#2a263d] text-white p-6 rounded-lg">
