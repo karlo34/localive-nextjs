@@ -47,7 +47,7 @@ const Reviews = () => {
             ) : (
                 <div className="flex flex-col justify-center items-center align-middle">
                     <h1 className="text-center pb-10 text-4xl font-bold">Recenzije</h1>
-                    <ul className="flex flex-row flex-wrap justify-around w-full max-w-300">
+                    <ul className="flex flex-row flex-wrap justify-start gap-x-25 w-full max-w-7xl mx-auto">
                         {reviews.slice(0, 6).map((review, index) => (
                             <div key={review.review_id} className="flex flex-col w-1/4 min-w-40 bg-[#3a3652] rounded-2xl mx-2 mb-10">
                                 <div className="flex flex-row pt-3 pl-3">
@@ -57,7 +57,7 @@ const Reviews = () => {
                                     <p className="pt-1 pl-5 text-xl font-bold">{review.name}</p>
                                 </div>
                                 <div className="flex items-center justify-center align-middle">
-                                    <p className="text-center mt-2 pb-5">{review.content}</p>
+                                    <p className="text-left mt-2 pb-5 px-5">{review.content}</p>
                                 </div>
                             </div>
                         ))}

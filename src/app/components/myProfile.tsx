@@ -2,6 +2,7 @@ import { FaUser, FaEnvelope, FaPhone, FaHome, FaPencilAlt, FaStopwatch, FaBuildi
 import { FaCakeCandles } from 'react-icons/fa6';
 import { useEffect, useState } from "react";
 import Leaderboard from "./leaderboard";
+import JobApplications from "./jobApplications";
 
 interface Review {
     id: number;
@@ -46,6 +47,8 @@ const myProfile = () => {
 
     const [userWrapper, setUserWrapper] = useState<UserWrapper | null>(null);
     const [error, setError] = useState<string | null>(null);
+
+    const [applied, setApplied] = useState<string>("events");
 
     const handleDoubleClick = (e: React.MouseEvent<HTMLInputElement>, field: string) => {
         console.log("Double-clicked on", field); // Check if it's working
@@ -149,7 +152,7 @@ const myProfile = () => {
 
                                 {/* Stats container - take remaining space */}
                                 <Leaderboard email={userWrapper.user.email} />
-                                
+
                             </div>
                             <div className="w-full bg-white rounded-lg mt-5 p-5 overflow-auto max-h-[250px]">
                                 <h1>Upiši kod događaja:</h1>
@@ -157,42 +160,54 @@ const myProfile = () => {
                                 <button className="mt-3 xl:mt-0 ml-0 xl:ml-3 py-2 px-5 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white font-semibold rounded-lg transition-all">Unesi</button>
                             </div>
                             <div className="w-full bg-white rounded-lg mt-5 p-5 overflow-auto max-h-[500px]">
-                                <div>
-                                    <h1 className="mb-5 text-xl font-semibold">Prijavljeni događaji</h1>
-                                    <ul className="space-y-4">
-                                        {[
-                                            { organizacija: "Jedna mladost", lokacija: "Velebitska 23, Split", tip: "Djeca, Edukacija", datum: "14.6.2025.", naslov: "InterSTEM" },
-                                            { organizacija: "Split Tech City", lokacija: "Poljička 19, Split", tip: "Druženje", datum: "03.7.2025.", naslov: "Locals & nomads" },
-                                            { organizacija: "Dump", lokacija: "Ulica kralja Zvonimira 45", tip: "Edukacija", datum: "28.03.2025.", naslov: "Php" },
-                                            { organizacija: "Digitalna Dalmacija", lokacija: "Put Firula 12", tip: "Neznan više", datum: "07.08.2025.", naslov: "Razvoj umjetne inteligencije" },
-                                            { organizacija: "Open Coffe", lokacija: "Velebitska ulica 88", tip: "Neznan više", datum: "14.09.2025.", naslov: "Živi lokalno radi globalno jaba diba di" },
-                                            { organizacija: "Open Coffe", lokacija: "Poljička cesta 23", tip: "Neznan više", datum: "31.12.2025.", naslov: "InterSTEM" },
-                                            { organizacija: "Open Coffe", lokacija: "Domovinskog rata 102", tip: "Neznan više", datum: "7.01.2026.", naslov: "InterSTEM" },
-                                            { organizacija: "Open Coffe", lokacija: "Matice hrvatske 17", tip: "Neznan više", datum: "19.2.2026.", naslov: "InterSTEM" },
-                                            { organizacija: "Open Coffe", lokacija: "Put Trstenika 39", tip: "Neznan više", datum: "23.12.2026.", naslov: "InterSTEM" },
-                                        ].map((data, i) => (
-                                            <li
-                                                key={i}
-                                                className="border rounded-lg shadow p-4 grid gap-y-1 gap-x-4 md:grid-cols-6 grid-cols-1 items-start events"
-                                            >
-                                                <span className="font-medium text-gray-500">#{i + 1}</span>
-                                                <span><strong>{data.organizacija}</strong></span>
-                                                <span>{data.naslov}</span>
-                                                <span>{data.lokacija}</span>
-                                                <span>{data.tip}</span>
-                                                <span>{data.datum}</span>
-                                                <div className="md:col-span-6 flex justify-start items-center align-middle md:justify-end">
-                                                    <button className="text-red-600 font-semibold bg-transparent hover:bg-transparent hover:underline odjavi">
-                                                        Odjavi se
-                                                    </button>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                <div className="flex w-full items-center justify-center gap-5">
+                                    <button onClick={() => setApplied("events")}>A</button>
+                                    <button onClick={() => setApplied("jobs")}>B</button>
                                 </div>
+                                {applied === "events" ? (
+                                    <div>
+                                        <h1 className="mb-5 text-xl font-semibold">Prijavljeni događaji</h1>
+                                        <ul className="space-y-4">
+                                            {[
+                                                { organizacija: "Jedna mladost", lokacija: "Velebitska 23, Split", tip: "Djeca, Edukacija", datum: "14.6.2025.", naslov: "InterSTEM" },
+                                                { organizacija: "Split Tech City", lokacija: "Poljička 19, Split", tip: "Druženje", datum: "03.7.2025.", naslov: "Locals & nomads" },
+                                                { organizacija: "Dump", lokacija: "Ulica kralja Zvonimira 45", tip: "Edukacija", datum: "28.03.2025.", naslov: "Php" },
+                                                { organizacija: "Digitalna Dalmacija", lokacija: "Put Firula 12", tip: "Neznan više", datum: "07.08.2025.", naslov: "Razvoj umjetne inteligencije" },
+                                                { organizacija: "Open Coffe", lokacija: "Velebitska ulica 88", tip: "Neznan više", datum: "14.09.2025.", naslov: "Živi lokalno radi globalno jaba diba di" },
+                                                { organizacija: "Open Coffe", lokacija: "Poljička cesta 23", tip: "Neznan više", datum: "31.12.2025.", naslov: "InterSTEM" },
+                                                { organizacija: "Open Coffe", lokacija: "Domovinskog rata 102", tip: "Neznan više", datum: "7.01.2026.", naslov: "InterSTEM" },
+                                                { organizacija: "Open Coffe", lokacija: "Matice hrvatske 17", tip: "Neznan više", datum: "19.2.2026.", naslov: "InterSTEM" },
+                                                { organizacija: "Open Coffe", lokacija: "Put Trstenika 39", tip: "Neznan više", datum: "23.12.2026.", naslov: "InterSTEM" },
+                                            ].map((data, i) => (
+                                                <li
+                                                    key={i}
+                                                    className="border rounded-lg shadow p-4 grid gap-y-1 gap-x-4 md:grid-cols-6 grid-cols-1 items-start events"
+                                                >
+                                                    <span className="font-medium text-gray-500">#{i + 1}</span>
+                                                    <span><strong>{data.organizacija}</strong></span>
+                                                    <span>{data.naslov}</span>
+                                                    <span>{data.lokacija}</span>
+                                                    <span>{data.tip}</span>
+                                                    <span>{data.datum}</span>
+                                                    <div className="md:col-span-6 flex justify-start items-center align-middle md:justify-end">
+                                                        <button className="text-red-600 font-semibold bg-transparent hover:bg-transparent hover:underline odjavi">
+                                                            Odjavi se
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <h1 className="mb-5 text-xl font-semibold">Prijavljene poslove</h1>
+                                        <JobApplications jobApplications={userWrapper.jobApplications} />
+                                    </div>
+                                )}
+
                             </div>
                         </main >
-                        
+
                     </>
                 ) : (
 
