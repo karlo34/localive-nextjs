@@ -1,35 +1,23 @@
 "use client";
 import { FaUser } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { handleSignOut } from "@/app/utils/jobSignOut";
+import { Job } from "@/app/types/job";
 
 interface JobOfferCardsProps {
   jobType: string;
   jobArea: string
 }
-interface Job {
-  country: string;
-  region: string;
-  city: string;
-  company_name: string;
-  created_at: Date;
-  description: string;
-  expires_at: Date;
-  job_id: number;
-  is_active: number;
-  location_id: number;
-  posted_by: number;
-  title: string;
-  application_count: number;
-}
+
 
 interface JobOfferCardsProps {
   abletosignup: boolean;
 }
 const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) => {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [displayJobs, setDisplayJobs] = useState<Job[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]); // Use Job type here
+  const [displayJobs, setDisplayJobs] = useState<Job[]>([]); // Use Job type here
   const [userApplications, setUserApplications] = useState<Set<number>>(new Set()); // Track user's applications
-  
+
   const fetchJobs = async () => {
     try {
       const res = await fetch("/api/jobs");
@@ -45,12 +33,11 @@ const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) =
       console.log(err);
     }
   };
+
   // Fetch all jobs
   useEffect(() => {
     fetchJobs();
   }, []);
-
-  
 
   // Fetch user's job applications
   useEffect(() => {
@@ -94,37 +81,8 @@ const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) =
       console.error("Error applying for job:", error);
     }
   }
-
-  // Handle job unapplication (sign out)
-  async function handleSignOut(job: Job): Promise<void> {
-    console.log("You clicked on Sign Out:", job);
-
-    try {
-      const response = await fetch("/api/jobApplication", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ jobId: job.job_id }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert("Job application removed successfully!");
-        setUserApplications((prev) => {
-          const newApplications = new Set(prev);
-          newApplications.delete(job.job_id); // Remove the job from the applied set
-          fetchJobs();
-          return newApplications;
-        });
-      } else {
-        console.log(data.error || "An error occurred");
-      }
-    } catch (error) {
-      console.error("Error removing application:", error);
-    }
-  }
+  
+   
 
   return (
     <div className="w-full rounded-lg mt-5 p-8 overflow-auto min-h-[100vh] text-black">
@@ -159,7 +117,13 @@ const JobOfferCards = ({ jobType, jobArea, abletosignup }: JobOfferCardsProps) =
             {userApplications.has(job.job_id) ? (
               <button
                 className="text-white px-2 py-1 mt-2 rounded-lg font-semibold text-base border-red-700 bg-red-500 hover:cursor-pointer"
-                onClick={() => handleSignOut(job)}
+                onClick={() =>
+                  handleSignOut({
+                    job, // Pass the job
+                    setUserApplications, // Pass setUserApplications
+                    fetchJobs, // Pass fetchJobs function
+                  })
+                }
               >
                 Odjavi se
               </button>

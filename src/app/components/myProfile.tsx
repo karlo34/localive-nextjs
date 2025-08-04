@@ -50,6 +50,9 @@ const myProfile = () => {
 
     const [applied, setApplied] = useState<string>("events");
 
+    const [userApplications, setUserApplications] = useState<Set<number>>(new Set());
+
+
     const handleDoubleClick = (e: React.MouseEvent<HTMLInputElement>, field: string) => {
         console.log("Double-clicked on", field); // Check if it's working
         if (field === 'address') {
@@ -76,6 +79,17 @@ const myProfile = () => {
         };
         fetchData();
     }, []);
+    const fetchJobs = async () => {
+        try {
+            const res = await fetch('/api/jobs');
+            const data = await res.json();
+            console.log(data);
+            // Set the fetched jobs to state or handle accordingly
+        } catch (err) {
+            console.error(err);
+            console.log('Error fetching jobs');
+        }
+    };
     useEffect(() => {
         if (userWrapper) {
             console.log(userWrapper.user.email);
@@ -201,7 +215,11 @@ const myProfile = () => {
                                 ) : (
                                     <div>
                                         <h1 className="mb-5 text-xl font-semibold">Prijavljene poslove</h1>
-                                        <JobApplications jobApplications={userWrapper.jobApplications} />
+                                        <JobApplications
+                                            jobApplications={userWrapper.jobApplications}
+                                            fetchJobs={fetchJobs}
+                                            setUserApplications={setUserApplications} // Pass setUserApplications here
+                                        />
                                     </div>
                                 )}
 

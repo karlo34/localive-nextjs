@@ -1,34 +1,29 @@
 "use client";
-import { get } from 'http';
-import React, { useEffect, useState } from 'react';
+import React from "react";
+import { handleSignOut } from "@/app/utils/jobSignOut";
+import { Job } from "@/app/types/job";
 
-interface Job {
-  country: string;
-  region: string;
-  city: string;
-  company_name: string;
-  created_at: Date;
-  description: string;
-  expires_at: Date;
-  job_id: number;
-  is_active: number;
-  location_id: number;
-  posted_by: number;
-  title: string;
-  application_count: number;
-}
-
-
+// Define JobApplicationsProps correctly, without duplication
 interface JobApplicationsProps {
   jobApplications: Job[];
+  fetchJobs: () => void;
+  setUserApplications: React.Dispatch<React.SetStateAction<Set<number>>>;
 }
 
-export default function JobApplications({ jobApplications }: JobApplicationsProps) {
-    const [jobs, setJobs] = useState<Job[]>([]);
+export default function JobApplications({
+  jobApplications,
+  fetchJobs,
+  setUserApplications,
+}: JobApplicationsProps) {
 
-    return (
-        <div>
-            {jobApplications.length > 0 ? (
+  // Debugging logs
+  console.log('jobApplications:', jobApplications);
+  console.log('fetchJobs:', fetchJobs);
+  console.log('setUserApplications:', setUserApplications);
+
+  return (
+    <div>
+      {jobApplications.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {jobApplications.map((job, index) => (
             <div data-user={job.job_id} key={index} className="p-4 border rounded shadow">
@@ -37,12 +32,24 @@ export default function JobApplications({ jobApplications }: JobApplicationsProp
               <p className="text-sm text-gray-500">
                 Applied on: {new Date(job.created_at).toLocaleDateString()}
               </p>
+              <button
+                className="text-white px-2 py-1 mt-2 rounded-lg font-semibold text-base border-red-700 bg-red-500 hover:cursor-pointer"
+                onClick={() =>
+                  handleSignOut({
+                    job,
+                    setUserApplications,
+                    fetchJobs,
+                  })
+                }
+              >
+                Odjavi se
+              </button>
             </div>
           ))}
         </div>
       ) : (
         "No job applications found."
       )}
-        </div>
-    )
+    </div>
+  );
 }
