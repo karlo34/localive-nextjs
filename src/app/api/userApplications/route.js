@@ -6,7 +6,7 @@ export async function GET(request) {
   try {
     // Get the user ID from cookies
     const cookieStore = cookies();
-    const userId = cookieStore.get('userId')?.value;
+    const userId = await cookieStore.get('userId')?.value;
 
     if (!userId) {
       return NextResponse.json({ error: 'User is not logged in' }, { status: 400 });

@@ -12,14 +12,16 @@ export async function handleSignOut({
     setUserApplications,
     fetchJobs,
 }: HandleSignOutParams): Promise<void> {
-    console.log("You clicked on Sign Out:", job);
+    console.log("You clicked on Sign Out:", job.job_id);
     try {
+        console.log("Sending request to remove application for job ID:", job);
         const response = await fetch("/api/jobApplication", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ jobId: job.job_id }),
+            credentials: "include", // ✅ This sends the userId cookie!
         });
 
         const data = await response.json();

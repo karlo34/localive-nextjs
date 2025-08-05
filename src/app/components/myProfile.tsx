@@ -216,9 +216,9 @@ const myProfile = () => {
                                     <div>
                                         <h1 className="mb-5 text-xl font-semibold">Prijavljene poslove</h1>
                                         <JobApplications
-                                            jobApplications={userWrapper.jobApplications}
+                                            jobApplications={userWrapper.jobApplications} // This will match the prop type `any[]`
                                             fetchJobs={fetchJobs}
-                                            setUserApplications={setUserApplications} // Pass setUserApplications here
+                                            setUserApplications={setUserApplications} // Pass the setState function directly
                                         />
                                     </div>
                                 )}
