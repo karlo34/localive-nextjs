@@ -9,9 +9,9 @@ const counterDisplay = () => {
     const [hasAnimated, setHasAnimated] = useState(false);
     // const [userNumber, setUserNumber] = useState();
 
-    const [userNumber, setUserNumber] = useState<number | null>(null); // nullable to check if data is fetched
-    const [eventNumber, setEventNumber] = useState<number | null>(null); // nullable to check if data is fetched
-    const [partnerNumber, setPartnerNumber] = useState<number | null>(null); // nullable to check if data is fetched
+    const [userNumber, setUserNumber] = useState<number | null>(null);
+    const [eventNumber, setEventNumber] = useState<number | null>(null);
+    const [partnerNumber, setPartnerNumber] = useState<number | null>(null);
 
     // ✅ Fetch user count once
     useEffect(() => {
